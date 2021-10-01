@@ -1,21 +1,20 @@
-import Poker from "./Poker";
-import UIPoker from "./UIPoker"
+import Poker from "../View/Poker/Poker";
+import GameView from "../View/GameView/GameView"
 
 var GameCtrl = cc.Class({
     extends: cc.Component,
     
     properties:{
-        pokerPrefab: cc.Prefab,
-        pokerContainer: cc.Prefab,
     
         pokers: [Poker],
+
+        _gameView: GameView,
 
     },
 
 
-    Init(pokerContainer,pokerPrefab){
-        this.pokerContainer = pokerContainer;
-        this.pokerPrefab = pokerPrefab;
+    Init(gameView){
+        this._gameView = gameView;
     },
 
 
@@ -28,21 +27,9 @@ var GameCtrl = cc.Class({
                 this.pokers.push(temp_poker);
             }
         }
+        this._gameView.CreatePokers(this.pokers);
         console.log(this.pokers);
 
-        // 创建所有扑克牌UI
-        this.pokers.forEach(poker=>{
-            let uiPoker = this.CreateUIPoker(poker);
-            this.pokerContainer.addChild(uiPoker.node);
-        });
     },
 
-    CreateUIPoker(poker){
-        let uiPokerNode = cc.instantiate(this.pokerPrefab);
-        let uiPoker = uiPokerNode.getComponent(UIPoker);
-        uiPoker.Init(poker);
-        uiPoker.node.setPosition(Math.random()*400-200, Math.random()*400-200);
-
-        return uiPoker;
-    },
 });

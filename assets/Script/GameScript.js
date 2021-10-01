@@ -1,28 +1,22 @@
 import GameCtrl from 'GameCtrl';
+import GameView from '../View/GameView/GameView';
 
 let GameScript = cc.Class({
     extends: cc.Component,
 
     properties: {
+        gameViewPrefab: cc.Prefab,
 
+        _gameView: GameView,
         _gameCtrl: GameCtrl,
 
-        pokerContainer: cc.Node,
-
-        pokerPrefab: cc.Prefab,
-
-        label: {
-            default: null,
-            type: cc.Label
-        },
     },
 
-    
-
     start(){
-        this.label.string = "It's the Game Scene";
+        this._gameView = cc.instantiate(this.gameViewPrefab).getComponent(GameView);
+        this.node.addChild(this._gameView.node);
         this._gameCtrl = new GameCtrl();
-        this._gameCtrl.Init(this.pokerContainer, this.pokerPrefab);
+        this._gameCtrl.Init(this._gameView);
         this._gameCtrl.Start();
     },
 });

@@ -195,7 +195,7 @@
       "__id__": 2
     },
     "_enabled": true,
-    "alignMode": 0,
+    "alignMode": 1,
     "_target": null,
     "_alignFlags": 36,
     "_left": 0,
