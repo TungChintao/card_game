@@ -3,13 +3,16 @@ let UIPoker = cc.Class({
     extends: cc.Component,
 
     properties: {
-        label: cc.Label,
+        pointLabel: cc.Label,
+        suitSprite: cc.Sprite,
+        suitSpriteList: [cc.SpriteFrame],
 
     },
 
 
     Init(poker){
-        this.label.string = `(${poker.point},${poker.suit})`;
+        this.pointLabel.string = `${poker.point}`;
+        this.suitSprite.spriteFrame = this.suitSpriteList[poker.suit];
     }
 
 

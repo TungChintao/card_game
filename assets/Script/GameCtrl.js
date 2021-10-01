@@ -23,7 +23,7 @@ var GameCtrl = cc.Class({
         console.log('Start');
 
         for(let point of ['3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A', '2']){
-            for(let suit of ['hearts', 'clubs', 'diamonds', 'spade']){
+            for(let suit = 0;suit<4;suit++){
                 let temp_poker = new Poker(point, suit);
                 this.pokers.push(temp_poker);
             }
@@ -41,7 +41,7 @@ var GameCtrl = cc.Class({
         let uiPokerNode = cc.instantiate(this.pokerPrefab);
         let uiPoker = uiPokerNode.getComponent(UIPoker);
         uiPoker.Init(poker);
-        uiPoker.node.setPosition(Math.random()*400, Math.random()*400);
+        uiPoker.node.setPosition(Math.random()*400-200, Math.random()*400-200);
 
         return uiPoker;
     },
