@@ -22,7 +22,7 @@ var GameCtrl = cc.Class({
     Start(){
         console.log('Start');
 
-        for(let point of ['3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A', '2']){
+        for(let point = 1;point<=13;point++){
             for(let suit = 0;suit<4;suit++){
                 let temp_poker = new Poker(point, suit);
                 this.pokers.push(temp_poker);
