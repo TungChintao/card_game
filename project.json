@@ -1,0 +1,8 @@
+{
+  "engine": "cocos2d-html5",
+  "packages": "packages",
+  "version": "2.4.6",
+  "name": "card_game",
+  "id": "d5223ad0-4a05-42f0-8a52-5cec9fbd2691",
+  "isNew": false
+}
