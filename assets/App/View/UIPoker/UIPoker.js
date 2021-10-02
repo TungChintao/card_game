@@ -45,14 +45,25 @@ let UIPoker = cc.Class({
          }
     },
 
+    
+    setStatus(status){
+        if(status){
+            this.pointLabel.node.active = false;
+            this.smallSuitSprite.node.active = false;
+            this.bigSuitSprite.node.active = false;
+            let sp = this.getComponent(cc.Sprite);
+            sp.spriteFrame = this.texBackBG;
+        }
+    },
 
     Init(poker){
+        poker.Bind(this);
         this.pointLabel.string = `${POINT_MAP[poker.point]}`;
         this.pointLabel.node.color = (poker.suit === 0 || poker.suit === 2) ? this.blackTextColor:this.redTextColor;
         if(poker.point > 10) this.bigSuitSprite.spriteFrame = this.texFaces[poker.point-11];
         else this.bigSuitSprite.spriteFrame = this.bigSuits[poker.suit];
         this.smallSuitSprite.spriteFrame = this.smallSuits[poker.suit];
-    }
-
+        // this.setStatus(poker.status);
+    },
 
 });

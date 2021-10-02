@@ -1,5 +1,5 @@
 import GameCtrl from 'GameCtrl';
-import GameView from '../View/GameView/GameView';
+import GameView from './GameView/GameView';
 
 let GameScript = cc.Class({
     extends: cc.Component,
@@ -17,7 +17,7 @@ let GameScript = cc.Class({
         this.node.addChild(this._gameView.node);
         this._gameCtrl = new GameCtrl();
         this._gameCtrl.Init(this._gameView);
-        this._gameCtrl.Start();
+        this._gameCtrl.Play();
     },
 });
 
