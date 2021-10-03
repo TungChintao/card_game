@@ -22,6 +22,15 @@ var GameView = cc.Class({
         // this.sendArea.addChild(poker);
     },
 
+    start(){
+        this.sendArea.on('touchend',this.onTouchEnd, this);
+    },
+
+    onTouchEnd(){
+        cc.log('GameView');
+        this.node.dispatchEvent( new cc.Event.EventCustom('gameview_onTouchEnd', true) );
+    },
+
     InitPokers(pokers){
         // 创建所有扑克牌UI
         pokers.forEach((poker, index)=>{
@@ -41,16 +50,43 @@ var GameView = cc.Class({
         let area = this.sendArea;
         let ar = area.convertToNodeSpaceAR(wp);
 
-        node.removeFromParent();
+        node.removeFromParent(false);
         node.position = ar;
         area.addChild(node);
 
         cc.tween(node)
             .delay(0.1*index)
-            .to(1, {position: cc.v2(0.25*index,0.25*index)})
+            .to(0.5, {position: cc.v2(0.25*index,0.25*index)})
             .start();
     },
 
+    toSetArea(poker,index){
+        let node = poker.view.node;
+        let wp = node.convertToWorldSpaceAR(cc.v2(0,0));
+        
+        let area = this.setArea;
+        let ar = area.convertToNodeSpaceAR(wp);
+
+        node.removeFromParent(false);
+        node.position = ar;
+        area.addChild(node);
+
+        cc.tween(node)
+            .delay(0.1)
+            .to(0.3,{scaleX:0})
+            .call(()=>{
+                poker.view.Refresh();
+            })
+            .to(0.3,{scaleX:1.2})
+            .delay(0.5)
+            .to(0.5, {position: cc.v2(0.25*index,0.25*index)})
+            .start();
+    },
+
+    OnEventInit(pokers){
+        this.InitPokers(pokers);
+    }
+,
     CreateUIPoker(poker){
         let uiPokerNode = cc.instantiate(this.pokerPrefab);
         let uiPoker = uiPokerNode.getComponent(UIPoker);

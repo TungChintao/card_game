@@ -18,6 +18,8 @@ let UIPoker = cc.Class({
     extends: cc.Component,
 
     properties: {
+        _poker:null,
+
         // resources
         pointLabel: cc.Label,
         bigSuitSprite: cc.Sprite,
@@ -45,6 +47,11 @@ let UIPoker = cc.Class({
          }
     },
 
+    start(){
+        // this.node.on('touchstart', this.onTouchStart, this);
+        // this.node.on('touchend', this.onTouchEnd, this);
+    },
+
     
     setStatus(status){
         if(status){
@@ -54,16 +61,37 @@ let UIPoker = cc.Class({
             let sp = this.getComponent(cc.Sprite);
             sp.spriteFrame = this.texBackBG;
         }
+        else{
+            this.pointLabel.node.active = true;
+            this.smallSuitSprite.node.active = true;
+            this.bigSuitSprite.node.active = true;
+            let sp = this.getComponent(cc.Sprite);
+            sp.spriteFrame = this.texFrontBG;
+        }
     },
 
     Init(poker){
+        this._poker = poker;
         poker.Bind(this);
         this.pointLabel.string = `${POINT_MAP[poker.point]}`;
         this.pointLabel.node.color = (poker.suit === 0 || poker.suit === 2) ? this.blackTextColor:this.redTextColor;
         if(poker.point > 10) this.bigSuitSprite.spriteFrame = this.texFaces[poker.point-11];
         else this.bigSuitSprite.spriteFrame = this.bigSuits[poker.suit];
         this.smallSuitSprite.spriteFrame = this.smallSuits[poker.suit];
-        // this.setStatus(poker.status);
+        this.setStatus(poker.status);
+    },
+
+    Refresh(){
+        this.setStatus(this._poker.status);
+    },
+
+    onTouchEnd(){
+        let pos = this.node.convertToNodeSpaceAR(Event).pos;
+        console.log('>> UIPoker:: onTouchEnd');
+    },
+
+    onDestroy(){
+        this.node.off('touchstart', this.onTouchStart, this);
     },
 
 });

@@ -1,3 +1,4 @@
+import EventManager from "../../GameFramework/Event/EventManager";
 
 class Poker{
     // status 背面:true 正面：false
@@ -79,14 +80,27 @@ export default class GameDB{
             let j = Math.floor(Math.random() * i--);
             [this._pokers[j], this._pokers[i]] = [this._pokers[i], this._pokers[j]];
         } 
+        EventManager.getInstance().emit('init_poker', this._pokers);
     };
 
     // 从初始位置到抽牌区
     toSendArea(){
-        let poker = this._pokers[this._pokers.length-1];
-        this.sendPokers.push(poker);
-        return this._pokers.pop();
+        for(let i = 0;i<52;i++){
+            // let poker = this._pokers[this._pokers.length-1];
+            let poker = this._pokers.pop();
+            this._sendPokers.push(poker);
+            EventManager.getInstance().emit('toSendArea',poker,i);
+            // return this._pokers.pop();
+        }
     };
+
+    toSetArea(){
+        let len = this._sendPokers.length-1;
+        let poker = this._sendPokers[len];
+        poker.status = !poker.status;
+        this._setPokers.push(poker);
+        return [this._sendPokers.pop(),this._setPokers.length,len];
+    }
 
     get pokers() { return this._pokers; };
     get sendPokers() { return this._sendPokers; };
