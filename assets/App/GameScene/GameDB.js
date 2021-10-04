@@ -1,5 +1,6 @@
-import EventManager from "../../GameFramework/Event/EventManager";
-
+// import EventManger from "../../GameFramework/Event/EventManger";
+import Model from "../../GameFramework/MVC/Model"
+import UIUtil from "../../GameFramework/Util/UIUtil";
 class Poker{
     // status 背面:true 正面：false
     // 0: heitao 1:hongtao 2:heimei 3:fangkuai
@@ -36,7 +37,7 @@ class PokerGroup{
 };
 
 
-export default class GameDB{
+export default class GameDB extends Model{
 
     static CONST_PLAY_GROUPS = 4;
     
@@ -46,23 +47,16 @@ export default class GameDB{
     _sendPokers = [];
     // 放置区扑克
     _setPokers = [];
-    // 玩家1扑克组
-    _player1Pokers = [];
-    // 玩家2扑克组
-    _player2Pokers = [];
-
-    static Create(){
-        let gameDB = new GameDB()
-
-        return gameDB;
-    };
+    // 玩家扑克组
+    _playerPokers = [[],[]];
 
     constructor(){
-        for(let i = 0;i<GameDB.CONST_PLAY_GROUPS; i++){
-            let pokerGroup1 = new PokerGroup();
-            let pokerGroup2 = new PokerGroup();
-            this._player1Pokers.push(pokerGroup1);
-            this._player2Pokers.push(pokerGroup2);
+        super();
+        for(let p = 0;p<2;p++){
+            for(let i = 0;i<GameDB.CONST_PLAY_GROUPS; i++){
+                let pokerGroup = new PokerGroup();
+                this._playerPokers[p].push(pokerGroup);
+            }
         }
 
         for(let point = 1;point<=13;point++){
@@ -71,6 +65,7 @@ export default class GameDB{
                 this._pokers.push(temp_poker);
             }
         }
+        console.log(this._pokers);
     };
 
     // 洗牌
@@ -80,7 +75,7 @@ export default class GameDB{
             let j = Math.floor(Math.random() * i--);
             [this._pokers[j], this._pokers[i]] = [this._pokers[i], this._pokers[j]];
         } 
-        EventManager.getInstance().emit('init_poker', this._pokers);
+        this.emit('init_poker', this._pokers);
     };
 
     // 从初始位置到抽牌区
@@ -89,18 +84,49 @@ export default class GameDB{
             // let poker = this._pokers[this._pokers.length-1];
             let poker = this._pokers.pop();
             this._sendPokers.push(poker);
-            EventManager.getInstance().emit('toSendArea',poker,i);
+            this.emit('toSendArea',poker,i);
+            console.log(poker);
             // return this._pokers.pop();
         }
     };
 
-    toSetArea(){
-        let len = this._sendPokers.length-1;
-        let poker = this._sendPokers[len];
+    toSetArea(playerID){
+        let sendLen = this._sendPokers.length-1;
+        let setLen = this._setPokers.length-1;
+        let poker = this._sendPokers[sendLen];
+        let setSuit = -1;
         poker.status = !poker.status;
+        if(setLen >= 0){
+            setSuit = this._setPokers[setLen].suit;
+        }
+        if(sendLen <= 0)
+            this.emit('off_clickToSetArea');
+
         this._setPokers.push(poker);
-        return [this._sendPokers.pop(),this._setPokers.length,len];
-    }
+
+        this.emit('clickToSetArea',poker,this._setPokers.length);
+
+        setTimeout(()=>{
+            if(this._sendPokers.pop().suit === setSuit) {
+                console.log(poker.suit,setSuit);
+                this.toPlayList(playerID-1);
+            }
+        },1000);
+
+       
+        // return [this._sendPokers.pop(),this._setPokers.length,sendLen,suit];
+    };
+
+    toPlayList(id){
+        setLen = this._setPokers.length;
+        for(let i = 0;i < setLen; i++){
+            let poker = this._setPokers.pop();
+            console.log(poker);
+            this._playerPokers[id][poker.suit].AddPoker(poker);
+            this.emit('toPlayList', poker, i,setLen*0.1,id+1);
+        }
+    };
+
 
     get pokers() { return this._pokers; };
     get sendPokers() { return this._sendPokers; };

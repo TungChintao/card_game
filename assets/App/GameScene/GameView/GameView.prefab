@@ -2084,6 +2084,7 @@
     "_enabled": true,
     "id": 1,
     "uid": 0,
+    "active": true,
     "sendArea": {
       "__id__": 9
     },

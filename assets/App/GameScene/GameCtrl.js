@@ -1,8 +1,8 @@
 import PlayerView from "./GameView/PlayerView"
 import GameView from "./GameView/GameView"
 import GameDB from "GameDB";
-import EventManger from "../../GameFramework/Event/EventManager"
-import EventManager from "../../GameFramework/Event/EventManager";
+// import EventManger from "../../GameFramework/Event/EventManger"
+import UIUtil from "../../GameFramework/Util/UIUtil";
 
 var GameCtrl = cc.Class({
     extends: cc.Component,
@@ -30,31 +30,38 @@ var GameCtrl = cc.Class({
 
     Init(gameView){
         this._gameView = gameView;
-        EventManger.getInstance().on('init_poker', this._gameView.OnEventInit, this._gameView);
-        EventManger.getInstance().on('toSendArea', this._gameView.toSendArea, this._gameView);
-        this._gameDB = GameDB.Create();
+        this._gameDB = new GameDB();
+       
+  
+        this._gameDB.on('init_poker', this._gameView.InitPokers, this._gameView);
+        this._gameDB.on('toSendArea', this._gameView.toSendArea, this._gameView);
+        this._gameDB.on('clickToSetArea',this._gameView.toSetArea, this._gameView);
+        this._gameDB.on('off_clickToSetArea',this._gameView.offSendTouch, this._gameView);
+        this._gameDB.on('toPlayList', this._gameView.toPlayList, this._gameView);
+
+        this._gameView.on('sendArea_OnTouchedEnd',this._gameDB.toSetArea, this._gameDB);
+
         this._gameDB.shuffle();
+        
         // this._gameView.InitPokers(this._gameDB.pokers);
     },
 
     Play(){
-        // for(let i = 0;i<52;i++){
-        //     poker = this._gameDB.toSendArea();
-        //     this._gameView.toSendArea(poker, i);
-        // }
         this._gameDB.toSendArea();
     },
 
-    dealPoker(){
-        let [poker,index,sendPokerLen] = this._gameDB.toSetArea();
-        cc.log(poker);
-        this._gameView.toSetArea(poker,index);
-        if(sendPokerLen === 0)  return true;
-        return false;
-    },
+    // dealPoker(){
+    //     let [poker,index,sendPokerLen, setSuit] = this._gameDB.toSetArea();
+    //     // cc.log(poker);
+    //     this._gameView.toSetArea(poker,index);
+    //     if(UIUtil.rule(poker,setSuit)){
+    //         this._gameDB.toPlayList(0);
+    //     } 
+ 
+    // },
 
     Exit(){
-        EventManager.getInstance().off('init_poker', this._gameView.OnEventInit);
+        this._gameDB.off('init_poker', this._gameView.OnEventInit);
     },
 
 });

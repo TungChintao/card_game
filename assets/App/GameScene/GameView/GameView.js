@@ -1,8 +1,9 @@
+import UIUtil from "../../../GameFramework/Util/UIUtil";
 import UIPoker from "../../View/UIPoker/UIPoker"
-import GameDB from "../GameDB";
+import View from "../../../GameFramework/MVC/View";
 
 var GameView = cc.Class({
-    extends: cc.Component,
+    extends: View,
 
     properties: {
         pokerPrefab: cc.Prefab,
@@ -14,6 +15,8 @@ var GameView = cc.Class({
         player1List: [cc.Node],
 
         player2List: [cc.Node],
+
+        playerTurn: 1,
     },
 
     onLoad(){
@@ -23,12 +26,16 @@ var GameView = cc.Class({
     },
 
     start(){
-        this.sendArea.on('touchend',this.onTouchEnd, this);
+        this.sendArea.on('touchend',this.sendOnTouchEnd, this);
     },
 
-    onTouchEnd(){
-        cc.log('GameView');
-        this.node.dispatchEvent( new cc.Event.EventCustom('gameview_onTouchEnd', true) );
+    sendOnTouchEnd(){
+        this.emit('sendArea_OnTouchedEnd', this.playerTurn);
+        this.playerTurn = (this.playerTurn % 2) + 1;
+    },
+
+    offSendTouch(){
+        this.sendArea.off('touchend', this.sendOnTouchEnd, this);
     },
 
     InitPokers(pokers){
@@ -45,14 +52,15 @@ var GameView = cc.Class({
 
     toSendArea(poker, index){
         let node = poker.view.node;
-        let wp = node.convertToWorldSpaceAR(cc.v2(0,0));
+        UIUtil.move(node,this.sendArea);
+        // let wp = node.convertToWorldSpaceAR(cc.v2(0,0));
         
-        let area = this.sendArea;
-        let ar = area.convertToNodeSpaceAR(wp);
+        // let area = this.sendArea;
+        // let ar = area.convertToNodeSpaceAR(wp);
 
-        node.removeFromParent(false);
-        node.position = ar;
-        area.addChild(node);
+        // node.removeFromParent(false);
+        // node.position = ar;
+        // area.addChild(node);
 
         cc.tween(node)
             .delay(0.1*index)
@@ -62,14 +70,15 @@ var GameView = cc.Class({
 
     toSetArea(poker,index){
         let node = poker.view.node;
-        let wp = node.convertToWorldSpaceAR(cc.v2(0,0));
+        UIUtil.move(node, this.setArea);
+        // let wp = node.convertToWorldSpaceAR(cc.v2(0,0));
         
-        let area = this.setArea;
-        let ar = area.convertToNodeSpaceAR(wp);
+        // let area = this.setArea;
+        // let ar = area.convertToNodeSpaceAR(wp);
 
-        node.removeFromParent(false);
-        node.position = ar;
-        area.addChild(node);
+        // node.removeFromParent(false);
+        // node.position = ar;
+        // area.addChild(node);
 
         cc.tween(node)
             .delay(0.1)
@@ -83,10 +92,20 @@ var GameView = cc.Class({
             .start();
     },
 
-    OnEventInit(pokers){
-        this.InitPokers(pokers);
-    }
-,
+    toPlayList(poker, index, time, playerID){
+        
+        let node = poker.view.node;
+        if(playerID === 1)
+            UIUtil.move(node, this.player1List[poker.suit]);
+        else 
+            UIUtil.move(node,this.player2List[poker.suit]);
+
+        cc.tween(node)
+            .delay(time-0.1*index)
+            .to(0.5, {position: cc.v2(0,0)})
+            .start();
+    },
+
     CreateUIPoker(poker){
         let uiPokerNode = cc.instantiate(this.pokerPrefab);
         let uiPoker = uiPokerNode.getComponent(UIPoker);

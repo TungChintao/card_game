@@ -1,6 +1,6 @@
-import { Singleton } from "../Base/Singleton"
+import { Singleton } from "./Singleton"
 
-export default class EventManager extends Singleton{
+export default class Event{
 
     /**
      * @description add listener

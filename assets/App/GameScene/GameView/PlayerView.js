@@ -1,4 +1,3 @@
-
 var PlayerView = cc.Class({
     extends: cc.Component,
 
@@ -16,10 +15,16 @@ var PlayerView = cc.Class({
             this.sendArea.on('touchend',this.onTouchEnd, this);
     },
 
+    Create(sendArea){
+        this.sendArea = sendArea;
+    },
+
     onTouchEnd(){
         cc.log('PlayerView');
         this.node.dispatchEvent( new cc.Event.EventCustom('playerView_onTouchEnd', true) );
     },
+
+
 
 
 
