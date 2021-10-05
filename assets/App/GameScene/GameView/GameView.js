@@ -20,13 +20,19 @@ var GameView = cc.Class({
     },
 
     onLoad(){
-        // let poker = new cc.Node();
-        // poker.position = new cc.Vec3(0.3*i,0.3*i,0);
-        // this.sendArea.addChild(poker);
     },
 
     start(){
-        this.sendArea.on('touchend',this.sendOnTouchEnd, this);
+        // this.sendArea.on('touchend',this.sendOnTouchEnd, this);
+    },
+
+    openSendTouch(){
+        cc.log('open');
+        this.sendArea.on('touchend', this.sendOnTouchEnd, this);
+    },
+
+    offSendTouch(){
+        this.sendArea.off('touchend', this.sendOnTouchEnd, this);
     },
 
     sendOnTouchEnd(){
@@ -34,9 +40,7 @@ var GameView = cc.Class({
         this.playerTurn = (this.playerTurn % 2) + 1;
     },
 
-    offSendTouch(){
-        this.sendArea.off('touchend', this.sendOnTouchEnd, this);
-    },
+   
 
     InitPokers(pokers){
         // 创建所有扑克牌UI
@@ -53,14 +57,6 @@ var GameView = cc.Class({
     toSendArea(poker, index){
         let node = poker.view.node;
         UIUtil.move(node,this.sendArea);
-        // let wp = node.convertToWorldSpaceAR(cc.v2(0,0));
-        
-        // let area = this.sendArea;
-        // let ar = area.convertToNodeSpaceAR(wp);
-
-        // node.removeFromParent(false);
-        // node.position = ar;
-        // area.addChild(node);
 
         cc.tween(node)
             .delay(0.1*index)
@@ -69,16 +65,9 @@ var GameView = cc.Class({
     },
 
     toSetArea(poker,index){
+        this.offSendTouch();
         let node = poker.view.node;
         UIUtil.move(node, this.setArea);
-        // let wp = node.convertToWorldSpaceAR(cc.v2(0,0));
-        
-        // let area = this.setArea;
-        // let ar = area.convertToNodeSpaceAR(wp);
-
-        // node.removeFromParent(false);
-        // node.position = ar;
-        // area.addChild(node);
 
         cc.tween(node)
             .delay(0.1)
@@ -90,6 +79,9 @@ var GameView = cc.Class({
             .delay(0.5)
             .to(0.5, {position: cc.v2(0.25*index,0.25*index)})
             .start();
+        setTimeout(()=>{
+            this.openSendTouch();
+        },1800);
     },
 
     toPlayList(poker, index, time, playerID){
@@ -114,5 +106,7 @@ var GameView = cc.Class({
 
         return uiPoker;
     },
+
+
 
 });

@@ -20,16 +20,6 @@ let GameScript = cc.Class({
         this._gameCtrl.Play();
     },
 
-    gameview_onTouchEnd(){
-        cc.log('GameScript');
-        this._gameCtrl.dealPoker();
-    },
-
-    playerView_onTouchEnd(){
-        cc.log('PlayerView');
-        judge = this._gameCtrl.dealPoker();
-    },
-
     onDestroy(){
         this._gameCtrl.Exit();
     },

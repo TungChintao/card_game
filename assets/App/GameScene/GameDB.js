@@ -65,7 +65,6 @@ export default class GameDB extends Model{
                 this._pokers.push(temp_poker);
             }
         }
-        console.log(this._pokers);
     };
 
     // 洗牌
@@ -85,9 +84,11 @@ export default class GameDB extends Model{
             let poker = this._pokers.pop();
             this._sendPokers.push(poker);
             this.emit('toSendArea',poker,i);
-            console.log(poker);
             // return this._pokers.pop();
         }
+        setTimeout(()=>{
+            this.emit('open_clickToSetArea');
+        },5800);
     };
 
     toSetArea(playerID){
@@ -108,10 +109,9 @@ export default class GameDB extends Model{
 
         setTimeout(()=>{
             if(this._sendPokers.pop().suit === setSuit) {
-                console.log(poker.suit,setSuit);
                 this.toPlayList(playerID-1);
             }
-        },1000);
+        },1600);
 
        
         // return [this._sendPokers.pop(),this._setPokers.length,sendLen,suit];

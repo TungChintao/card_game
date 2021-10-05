@@ -11,28 +11,12 @@ var PlayerView = cc.Class({
     },
 
     start(){
-        if(this.active)
-            this.sendArea.on('touchend',this.onTouchEnd, this);
     },
 
     Create(sendArea){
         this.sendArea = sendArea;
     },
 
-    onTouchEnd(){
-        cc.log('PlayerView');
-        this.node.dispatchEvent( new cc.Event.EventCustom('playerView_onTouchEnd', true) );
-    },
 
-
-
-
-
-    // InitPlayer(sendArea, id, uid=0){
-    //     this.sendArea = sendArea;
-    //     this.id = id;
-    //     this.uid = uid;
-
-    // },
 
 });

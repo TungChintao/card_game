@@ -1,8 +1,6 @@
 import PlayerView from "./GameView/PlayerView"
 import GameView from "./GameView/GameView"
 import GameDB from "GameDB";
-// import EventManger from "../../GameFramework/Event/EventManger"
-import UIUtil from "../../GameFramework/Util/UIUtil";
 
 var GameCtrl = cc.Class({
     extends: cc.Component,
@@ -36,6 +34,7 @@ var GameCtrl = cc.Class({
         this._gameDB.on('init_poker', this._gameView.InitPokers, this._gameView);
         this._gameDB.on('toSendArea', this._gameView.toSendArea, this._gameView);
         this._gameDB.on('clickToSetArea',this._gameView.toSetArea, this._gameView);
+        this._gameDB.on('open_clickToSetArea', this._gameView.openSendTouch, this._gameView);
         this._gameDB.on('off_clickToSetArea',this._gameView.offSendTouch, this._gameView);
         this._gameDB.on('toPlayList', this._gameView.toPlayList, this._gameView);
 
@@ -49,16 +48,6 @@ var GameCtrl = cc.Class({
     Play(){
         this._gameDB.toSendArea();
     },
-
-    // dealPoker(){
-    //     let [poker,index,sendPokerLen, setSuit] = this._gameDB.toSetArea();
-    //     // cc.log(poker);
-    //     this._gameView.toSetArea(poker,index);
-    //     if(UIUtil.rule(poker,setSuit)){
-    //         this._gameDB.toPlayList(0);
-    //     } 
- 
-    // },
 
     Exit(){
         this._gameDB.off('init_poker', this._gameView.OnEventInit);
