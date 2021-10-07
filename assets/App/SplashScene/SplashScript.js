@@ -20,7 +20,6 @@ let SplashScript = cc.Class({
             })
         }, 1000)
     },
-
 });
 
 
