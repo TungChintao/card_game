@@ -2,8 +2,7 @@ import Event from '../Base/Event'
 
 var View = cc.Class({
     extends: cc.Component,
-
-    // _Event = new Event(),
+    
     ctor(){
         this. _Event = new Event();
     },

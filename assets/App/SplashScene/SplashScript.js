@@ -2,6 +2,7 @@ let SplashScript = cc.Class({
     extends: cc.Component,
 
     properties: {
+
         label: {
             default: null,
             type: cc.Label
@@ -9,7 +10,6 @@ let SplashScript = cc.Class({
     },
 
     onLoad(){
-        console.log('>> onLoad');
     },
 
     start(){
@@ -20,4 +20,8 @@ let SplashScript = cc.Class({
             })
         }, 1000)
     },
+
 });
+
+
+

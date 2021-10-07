@@ -1,6 +1,7 @@
-// import EventManger from "../../GameFramework/Event/EventManger";
 import Model from "../../GameFramework/MVC/Model"
 import UIUtil from "../../GameFramework/Util/UIUtil";
+import { Area } from "../Global/ConfigEsum";
+
 class Poker{
     // status 背面:true 正面：false
     // 0: heitao 1:hongtao 2:heimei 3:fangkuai
@@ -27,10 +28,19 @@ class Poker{
 };
 
 class PokerGroup{
+
     _pokers = [];
+
+    pokerNum = 0;
 
     AddPoker(poker){
         this._pokers.push(poker);
+        this.pokerNum++;
+    }
+
+    PopPoker(){
+        this.pokerNum--;
+        return this._pokers.pop();
     }
 
     get pokers(){ return this._pokers;};
@@ -50,6 +60,9 @@ export default class GameDB extends Model{
     // 玩家扑克组
     _playerPokers = [[],[]];
 
+    // 玩家区玩家可操作的卡牌节点中的poker数目
+    _player_card_node = [[0,0,0,0],[0,0,0,0]];
+
     constructor(){
         super();
         for(let p = 0;p<2;p++){
@@ -65,6 +78,8 @@ export default class GameDB extends Model{
                 this._pokers.push(temp_poker);
             }
         }
+
+        // this.on('UIPokerOnTouch',this.toSetArea, this);
     };
 
     // 洗牌
@@ -89,29 +104,75 @@ export default class GameDB extends Model{
         setTimeout(()=>{
             this.emit('open_clickToSetArea');
         },5800);
+      
     };
 
-    toSetArea(playerID){
-        let sendLen = this._sendPokers.length-1;
-        let setLen = this._setPokers.length-1;
-        let poker = this._sendPokers[sendLen];
+    // toSetArea(playerID){
+    //     let sendLen = this._sendPokers.length-1;
+    //     let setLen = this._setPokers.length-1;
+    //     let poker = this._sendPokers[sendLen];
+    //     let setSuit = -1;
+    //     poker.status = !poker.status;
+    //     if(setLen >= 0){
+    //         setSuit = this._setPokers[setLen].suit;
+    //     }
+
+    //     this._setPokers.push(poker);
+
+    //     this.emit('clickToSetArea',poker,this._setPokers.length);
+    //     console.log('gamedb');
+
+    //     if(sendLen <= 0)
+    //         this.emit('off_clickToSetArea');
+
+    //     setTimeout(()=>{
+    //         if(this._sendPokers.pop().suit === setSuit) {
+    //             this.toPlayList(playerID-1);
+    //         }
+    //     },1800);
+
+       
+    //     // return [this._sendPokers.pop(),this._setPokers.length,sendLen,suit];
+    // };
+
+    toSetArea(dealArea,playerID, dealPoker){
+
         let setSuit = -1;
-        poker.status = !poker.status;
-        if(setLen >= 0){
+        let setLen = this._setPokers.length-1;
+        if(setLen >= 0)
             setSuit = this._setPokers[setLen].suit;
+
+        if(dealArea === Area.sendArea){
+            let sendLen = this._sendPokers.length-1;
+            let poker = this._sendPokers[sendLen];
+            poker.status = !poker.status;
+    
+            this._setPokers.push(poker);
+            this.emit('clickToSetArea',poker,this._setPokers.length,dealArea);
+            
+            setTimeout(()=>{
+                if(this._sendPokers.pop().suit === setSuit) {
+                    this.toPlayList(playerID);
+                }
+            },1700);
+
+            if(this._sendPokers.length === 0)
+                this.judgeWinner();
+
         }
-        if(sendLen <= 0)
-            this.emit('off_clickToSetArea');
+        else{
+            let poker = this._playerPokers[playerID][dealPoker.suit].PopPoker();
+            this._setPokers.push(poker);
+            this.emit('clickToSetArea', poker,0,dealArea);
 
-        this._setPokers.push(poker);
+            setTimeout(()=>{
+                if(setSuit === dealPoker.suit){
+                    this.toPlayList(playerID);
+                }
+            },1700);
+        }
+    
 
-        this.emit('clickToSetArea',poker,this._setPokers.length);
-
-        setTimeout(()=>{
-            if(this._sendPokers.pop().suit === setSuit) {
-                this.toPlayList(playerID-1);
-            }
-        },1600);
 
        
         // return [this._sendPokers.pop(),this._setPokers.length,sendLen,suit];
@@ -123,9 +184,27 @@ export default class GameDB extends Model{
             let poker = this._setPokers.pop();
             console.log(poker);
             this._playerPokers[id][poker.suit].AddPoker(poker);
+            this._player_card_node[id][poker.suit]++;
             this.emit('toPlayList', poker, i,setLen*0.1,id+1);
         }
     };
+
+    isTopIndexPoker(poker){
+        return true;
+        //return false;
+    };
+
+    judgeWinner(){
+        let player1_cardNum = 0;
+        let player2_cardNum = 0;
+        for(let suit = 0;suit<4;suit++){
+            player1_cardNum += this._playerPokers[0][suit].pokerNum;
+            player2_cardNum += this._playerPokers[1][suit].pokerNum;
+        }
+        let winner = (player1_cardNum>player2_cardNum)?1:2;
+        this.emit("GameOver",winner);
+
+    }
 
 
     get pokers() { return this._pokers; };

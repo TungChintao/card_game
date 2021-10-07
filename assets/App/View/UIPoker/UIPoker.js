@@ -1,3 +1,5 @@
+import View from "../../../GameFramework/MVC/View"
+import {Area} from "../../Global/ConfigEsum"
 
 const POINT_MAP = {
     "1": "A",
@@ -15,10 +17,13 @@ const POINT_MAP = {
     "13": "K",
 }
 let UIPoker = cc.Class({
-    extends: cc.Component,
+    extends: View,
 
     properties: {
-        _poker:null,
+        _poker: null,
+        _View: null,
+
+        Area: Area.initPokerArea,   
 
         // resources
         pointLabel: cc.Label,
@@ -47,9 +52,12 @@ let UIPoker = cc.Class({
          }
     },
 
+    get poker() { return this._poker; },
+    get View() { return this._View; },
+
     start(){
         // this.node.on('touchstart', this.onTouchStart, this);
-        // this.node.on('touchend', this.onTouchEnd, this);
+        this.node.on('touchend', this.onTouchEnd, this);
     },
 
     
@@ -70,8 +78,9 @@ let UIPoker = cc.Class({
         }
     },
 
-    Init(poker){
+    Init(poker, view){
         this._poker = poker;
+        this._View = view;
         poker.Bind(this);
         this.pointLabel.string = `${POINT_MAP[poker.point]}`;
         this.pointLabel.node.color = (poker.suit === 0 || poker.suit === 2) ? this.blackTextColor:this.redTextColor;
@@ -87,7 +96,8 @@ let UIPoker = cc.Class({
 
     onTouchEnd(){
         let pos = this.node.convertToNodeSpaceAR(Event).pos;
-        console.log('>> UIPoker:: onTouchEnd');
+        console.log(this._poker);
+        this._View.UIPokerOnTouch(this._poker, this.Area);
     },
 
     onDestroy(){
