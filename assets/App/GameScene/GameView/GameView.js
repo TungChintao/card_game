@@ -9,7 +9,8 @@ var GameView = cc.Class({
     properties: {
 
         _Model: null,
-        _player: [],
+        _gameRound: null,
+        // _player: [],
 
         pokerPrefab: cc.Prefab,
         initPokerArea: cc.Node,
@@ -21,10 +22,15 @@ var GameView = cc.Class({
 
         player2List: [cc.Node],
 
+        mask: cc.Node,
+        tips: cc.Node,
+
         playerTurn: 0,
     },
 
     onLoad(){
+        // this.mask.node.active = false;
+        // this.tips.cc.Node.active = false;
     },
 
     start(){
@@ -39,6 +45,7 @@ var GameView = cc.Class({
         this._Model.on('open_clickToSetArea', this.openSendTouch, this);
         this._Model.on('off_clickToSetArea',this.offSendTouch, this);
         this._Model.on('toPlayList', this.toPlayList, this);
+        this._Model.on('GameOver',this.showResult,this);
 
     },
 
@@ -51,14 +58,22 @@ var GameView = cc.Class({
         this._Model.off('toPlayList', this.toPlayList, this);
     },
 
-    BindPlayer(player1,player2){
-        this._player.push(player1);
-        this._player.push(player2);
+    BindRound(gameRound){
+        this._gameRound = gameRound;
     },
 
-    UnBindPlayer(){
-        this._player = [];
+    UnBindRound(){
+        this._gameRound = null;
     },
+
+    // BindPlayer(player1,player2){
+    //     this._player.push(player1);
+    //     this._player.push(player2);
+    // },
+
+    // UnBindPlayer(){
+    //     this._player = [];
+    // },
 
     openSendTouch(){
         cc.log('open');
@@ -158,14 +173,15 @@ var GameView = cc.Class({
         // 1.这张牌是抽牌区或玩家出牌区的
         // 2.这种牌是最上方的
         // 3.这张牌是玩家X翻开的
-        if(!this._player[this.playerTurn].active) return;
-        let dealArea = pokerArea;
-        if(dealArea === Area.sendArea || dealArea === this.playerTurn){
+        if(!this._gameRound.judgePlayerActive()) return;
+        // if(!this._player[this._gameRound.round].active) return;
+        if(pokerArea === Area.sendArea || pokerArea === this._gameRound.round){
             if(this._Model.isTopIndexPoker(poker)){
-                this.emit('UIPokerOnTouch',dealArea,this.playerTurn,poker);
-                this._player[this.playerTurn].active = false;
-                this.playerTurn = (this.playerTurn+1) % 2;
-                this._player[this.playerTurn].active = true;
+                this.emit('UIPokerOnTouch',pokerArea,this._gameRound.round,poker);
+                this._gameRound.roundTurn();
+                // this._player[this.playerTurn].active = false;
+                // this.playerTurn = (this.playerTurn+1) % 2;
+                // this._player[this.playerTurn].active = true;
             }
         }
     },
@@ -178,6 +194,11 @@ var GameView = cc.Class({
 
         return uiPoker;
     },
+
+    showResult(winner){
+        this.mask.node.active = true;
+        this.tips.node.active = true;
+    }
 
 
 

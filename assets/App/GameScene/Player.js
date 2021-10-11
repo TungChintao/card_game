@@ -10,6 +10,7 @@ var Player = cc.Class({
         active: false,
         sendArea: cc.Node,
         playerCardList: [cc.Node],
+        AIcontrl: false,
     },
 
     start(){

@@ -9,7 +9,6 @@ let GameScript = cc.Class({
 
         _gameView: GameView,
         _gameCtrl: GameCtrl,
-
     },
 
     start(){
