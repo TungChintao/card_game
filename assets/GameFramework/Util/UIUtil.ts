@@ -14,9 +14,4 @@ export default class UIUtil {
         console.log('UIUtil:log');
         return this;
     };
-
-    static rule(poker, suit){
-        if(poker.suit === suit) return true;
-        return false;
-    }
 };

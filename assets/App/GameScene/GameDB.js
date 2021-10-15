@@ -105,10 +105,7 @@ export default class GameDB extends Model{
             this.emit('toSendArea',poker,i);
             // return this._pokers.pop();
         }
-        setTimeout(()=>{
-            this.emit('open_clickToSetArea');
-        },5800);
-      
+        cc.log(this._sendPokers.length);    
     };
 
     toSetArea(dealArea,playerID, dealPoker){
@@ -132,8 +129,11 @@ export default class GameDB extends Model{
                 }
             },1700);
 
-            if(this._sendPokers.length === 0)
+            setTimeout(()=>{
+                if(this._sendPokers.length === 0)
                 this.judgeWinner();
+            },2200);
+                
 
         }
         else{
@@ -161,19 +161,25 @@ export default class GameDB extends Model{
         }
     };
 
-    isTopIndexPoker(poker){
-        return true;
-        //return false;
+    isTopIndexPoker(poker,playerID, pokerArea){
+        let topPoker = null;
+        if(pokerArea === Area.sendArea)
+            topPoker = this._sendPokers[this._sendPokers.length-1];
+        else topPoker = this._playerPokers[playerID][poker.suit].GetTopPoker();
+        if(poker.suit === topPoker.suit && poker.point === topPoker.point)
+            return true;
+        return false;
     };
 
     CmpCardNum(){
-        if(this._playerPokersNum[0] > this._playerPokersNum[1]) return 1;
-        else if(this._playerPokers[0] < this._playerPokersNum[1]) return 2;
+        if(this._playerPokersNum[0] > this._playerPokersNum[1]) return 2;
+        else if(this._playerPokers[0] < this._playerPokersNum[1]) return 1;
         else return 0;
     }
 
     judgeWinner(){
         let winner = this.CmpCardNum();
+        cc.log('judge');
         this.emit("GameOver",winner);
     };
 

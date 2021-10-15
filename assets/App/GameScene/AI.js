@@ -49,10 +49,11 @@ export default class AI extends Model{
         }
         else{
             let setTopPokerSuit = this._Model.setTopPoker().suit;
-            if(this._Model.CmpCardNum() == (playerID+1) || 
-            this._Model.playerPokersNum[playerID] == 0 ||
-            this._Model.playerPokersNum[playerID] == this._Model.playerPokers[playerID][setTopPokerSuit].pokerNum){
+            if(this._Model.CmpCardNum()%2 != playerID || 
+            this._Model.playerPokersNum[playerID] === 0 ||
+            this._Model.playerPokersNum[playerID] === this._Model.playerPokers[playerID][setTopPokerSuit].pokerNum){
                 cc.log('2');
+                cc.log(this._Model.CmpCardNum()%2)
                 dealPoker = this._Model.sendTopPoker();
                 dealArea = Area.sendArea;
             }
@@ -73,7 +74,7 @@ export default class AI extends Model{
                 }
                 dealPoker = this._Model.playerPokers[playerID][maxNumSuit].GetTopPoker();
                 cc.log(dealPoker);
-                if(playerID == 0) dealArea = Area.player1List
+                if(playerID === 0) dealArea = Area.player1List
                 else dealArea = Area.player2List;
             }
         }

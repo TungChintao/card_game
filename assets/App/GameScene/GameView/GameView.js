@@ -22,19 +22,25 @@ var GameView = cc.Class({
 
         player2List: [cc.Node],
 
-        mask: cc.Node,
-        tips: cc.Node,
+        homeBtn: cc.Button,
+
+        AiManageBtn: cc.Button,
 
         playerTurn: 0,
     },
 
     onLoad(){
-        // this.mask.node.active = false;
-        // this.tips.cc.Node.active = false;
+        this.homeBtn.node.on('touchend', this.backHomeScene,this);
+        this.AiManageBtn.node.on('touchend',this.AiContrl,this);
     },
 
     start(){
+        
         // this.sendArea.on('touchend',this.sendOnTouchEnd, this);
+    },
+
+    AiContrl(){
+        this.emit('AIManageBtnOnTouch',this._gameRound.round);
     },
 
     BindModel(model){
@@ -42,19 +48,14 @@ var GameView = cc.Class({
         this._Model.on('init_poker', this.InitPokers, this);
         this._Model.on('toSendArea', this.toSendArea, this);
         this._Model.on('clickToSetArea',this.toSetArea, this);
-        this._Model.on('open_clickToSetArea', this.openSendTouch, this);
-        this._Model.on('off_clickToSetArea',this.offSendTouch, this);
         this._Model.on('toPlayList', this.toPlayList, this);
         this._Model.on('GameOver',this.showResult,this);
-
     },
 
     UnBindModel(){
         this._Model.off('init_poker', this.InitPokers, this);
         this._Model.off('toSendArea', this.toSendArea, this);
         this._Model.off('clickToSetArea',this.toSetArea, this);
-        this._Model.off('open_clickToSetArea', this.openSendTouch, this);
-        this._Model.off('off_clickToSetArea',this.offSendTouch, this);
         this._Model.off('toPlayList', this.toPlayList, this);
     },
 
@@ -74,19 +75,6 @@ var GameView = cc.Class({
     // UnBindPlayer(){
     //     this._player = [];
     // },
-
-    openSendTouch(){
-        cc.log('open');
-        this.sendArea.on('touchend', this.sendOnTouchEnd, this);
-    },
-
-    offSendTouch(){
-        this.sendArea.off('touchend', this.sendOnTouchEnd, this);
-    },
-
-    sendOnTouchEnd(){
-        this.emit('sendArea_OnTouchedEnd', this.playerTurn);
-    },
 
     InitPokers(pokers){
         // 创建所有扑克牌UI
@@ -176,7 +164,7 @@ var GameView = cc.Class({
         if(!this._gameRound.judgePlayerActive()) return;
         // if(!this._player[this._gameRound.round].active) return;
         if(pokerArea === Area.sendArea || pokerArea === this._gameRound.round){
-            if(this._Model.isTopIndexPoker(poker)){
+            if(this._Model.isTopIndexPoker(poker,this._gameRound.round,pokerArea)){
                 this.emit('UIPokerOnTouch',pokerArea,this._gameRound.round,poker);
                 this._gameRound.roundTurn();
                 // this._player[this.playerTurn].active = false;
@@ -191,13 +179,16 @@ var GameView = cc.Class({
         let uiPoker = uiPokerNode.getComponent(UIPoker);
         uiPoker.Init(poker,this);
         //uiPoker.node.setPosition(0,0);
-
         return uiPoker;
     },
 
+    backHomeScene(){
+        cc.log('ok');
+        // cc.director.loadScene('StartScene');
+    },
+
     showResult(winner){
-        this.mask.node.active = true;
-        this.tips.node.active = true;
+        this.emit('gameOver',winner);
     }
 
 

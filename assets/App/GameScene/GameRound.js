@@ -38,8 +38,13 @@ export default class GameRound extends Model{
         if(this._player[this.round].AIcontrl) {
             // this.emit('AiDealCard',this.round);
             // cc.log('contrl round');
-            setTimeout(()=>{this._AIplayer.DealCard(this.round)},3500);
+            setTimeout(()=>{this._AIplayer.DealCard(this.round)},3000);
         }
+    };
+
+    Refresh(playerID){
+        if(this._player[playerID])
+            setTimeout(()=>{this._AIplayer.DealCard(this.round)},3000);
     };
 
     judgePlayerActive(){

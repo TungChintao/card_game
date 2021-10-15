@@ -12,6 +12,7 @@ let StartScript = cc.Class({
     },
 
     onLoad(){
+        global.fromWhichScene = 'StartScene';
         if(global.selfInfo.token === null) 
             this.onlineBtn.node.active = false;
         else
@@ -22,8 +23,9 @@ let StartScript = cc.Class({
     },
 
     toRoomSecne(){
+        global.toWhichScene = 'RoomScene';
         global.gameMode = Mode.Online;
-        cc.director.loadScene('RoomScene');
+        cc.director.loadScene('SplashScene');
     },
 
     OnPVEbtnClick(){

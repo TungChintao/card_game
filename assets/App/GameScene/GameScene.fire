@@ -285,6 +285,9 @@
     "gameViewPrefab": {
       "__uuid__": "c2cd1f27-461d-4561-a432-8e50c110f77e"
     },
+    "gameOverPrefab": {
+      "__uuid__": "6861b4b3-f5bb-4937-8233-3cc44faf3577"
+    },
     "_gameView": null,
     "_gameCtrl": null,
     "_id": "5dKVvzKVFEd6Hg9+vPcQXp"

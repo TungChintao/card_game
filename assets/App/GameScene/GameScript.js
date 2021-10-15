@@ -1,14 +1,22 @@
 import GameCtrl from 'GameCtrl';
 import GameView from './GameView/GameView';
+import View from '../../GameFramework/MVC/View'
+import glabal from '../Global/global'
 
-let GameScript = cc.Class({
-    extends: cc.Component,
+cc.Class({
+    extends: View,
 
     properties: {
         gameViewPrefab: cc.Prefab,
+        gameOverPrefab: cc.Prefab,
 
         _gameView: GameView,
         _gameCtrl: GameCtrl,
+    },
+
+    onLoad(){
+        this.node.on('OneMoreGame',this.NewGame,this);
+        this.node.on('returnLastScene',this.returnLastScene,this);
     },
 
     start(){
@@ -17,10 +25,39 @@ let GameScript = cc.Class({
         this._gameCtrl = new GameCtrl();
         this._gameCtrl.Init(this._gameView);
         this._gameCtrl.Play();
+        
+        this._gameView.on('gameOver',this.showResult,this);
+    },
+
+    Init(){
+   
+    },
+
+    showResult(winner){
+        let gameOver = cc.instantiate(this.gameOverPrefab);
+
+        this.node.addChild(gameOver);
+
+    },
+
+    NewGame(){
+        this.ExitGame(this._gameCtrl);
+        this._gameCtrl = new GameCtrl();
+        this._gameCtrl.Init(this._gameView);
+    },
+
+    ExitGame(gameCtrl){
+        if(gameCtrl != null)
+            // gameCtrl.Exit();
+            gameCtrl.onDestroy();
+    },
+
+    returnLastScene(){
+        cc.director.loadScene(glabal.fromWhichScene);
     },
 
     onDestroy(){
-        this._gameCtrl.Exit();
+        // this._gameCtrl.Exit();
     },
     
 });

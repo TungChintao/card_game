@@ -96,7 +96,7 @@ let UIPoker = cc.Class({
 
     onTouchEnd(){
         let pos = this.node.convertToNodeSpaceAR(Event).pos;
-        console.log(this._poker);
+        // console.log(this._poker);
         this._View.UIPokerOnTouch(this._poker, this.Area);
     },
 
