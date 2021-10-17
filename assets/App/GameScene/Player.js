@@ -8,8 +8,6 @@ var Player = cc.Class({
         uid: 0,
         nickName: undefined,
         active: false,
-        sendArea: cc.Node,
-        playerCardList: [cc.Node],
         AIcontrl: false,
     },
 
@@ -24,8 +22,12 @@ var Player = cc.Class({
         else this.nickName = nickName;
     },
 
-    
+    SetUid(uid){
+        this.uid = uid;
+    },
 
-
+    SetName(name){
+        this.nickName = name;
+    }
 
 });

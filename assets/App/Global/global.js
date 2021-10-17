@@ -12,8 +12,9 @@ export default{
     splashLabel: "It's a loading Scene",
     fromWhichScene: 'HallScene',
     toWhichScene: 'StartScene',
-
+    yourTurn: false,
 }
+
 
 
 

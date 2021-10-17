@@ -1,5 +1,7 @@
 import Model from "../../GameFramework/MVC/Model"
 import { Area } from "../Global/ConfigEsum";
+import global from "../Global/global";
+import {Mode} from "../Global/ConfigEsum"
 
 class Poker{
     // status 背面:true 正面：false
@@ -19,6 +21,12 @@ class Poker{
 
     unBind(){
         this._view = null;
+    };
+
+    setPoker(suit,point){
+        this.point = point;
+        this.suit = suit;
+        this._view.setPoker(suit,point);
     };
 
     get view(){
@@ -78,7 +86,12 @@ export default class GameDB extends Model{
 
         for(let point = 1;point<=13;point++){
             for(let suit = 0;suit<4;suit++){
-                let temp_poker = new Poker(point, suit);
+                let temp_poker;
+                if(global.gameMode == Mode.Online)
+                    temp_poker = new Poker();
+                else
+                    temp_poker = new Poker(point, suit);
+                   
                 this._pokers.push(temp_poker);
             }
         }
@@ -93,7 +106,12 @@ export default class GameDB extends Model{
             let j = Math.floor(Math.random() * i--);
             [this._pokers[j], this._pokers[i]] = [this._pokers[i], this._pokers[j]];
         } 
-        this.emit('init_poker', this._pokers);
+        // this.emit('init_poker', this._pokers);
+        this.InitPoker();
+    };
+
+    InitPoker(){
+        this.emit('init_poker',this._pokers);
     };
 
     // 从初始位置到抽牌区
@@ -105,11 +123,10 @@ export default class GameDB extends Model{
             this.emit('toSendArea',poker,i);
             // return this._pokers.pop();
         }
-        cc.log(this._sendPokers.length);    
+        // cc.log(this._sendPokers.length);    
     };
 
     toSetArea(dealArea,playerID, dealPoker){
-
         let setSuit = -1;
         let setLen = this._setPokers.length-1;
         if(setLen >= 0)
@@ -179,9 +196,14 @@ export default class GameDB extends Model{
 
     judgeWinner(){
         let winner = this.CmpCardNum();
-        cc.log('judge');
+        // cc.log('judge');
         this.emit("GameOver",winner);
     };
+
+    exchangePoker(suit,point){
+        let len = this._sendPokers.length;
+        this._sendPokers[len-1].setPoker(suit,point);
+    }
 
     setPokerNum() { return this._setPokers.length; }
     sendPokerNum() { return this._sendPokers.length; }

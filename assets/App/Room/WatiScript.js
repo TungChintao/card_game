@@ -22,12 +22,13 @@ cc.Class({
     start () {
 
       this.returnBtn.node.on('touchend',this.returnRoom,this);
-        //TODO  事件监听
+
+        // 事件监听 2s/次
         // 等待玩家加入
       this.schedule(()=>{
         // 这里的 this 指向 component
         this.checkPlayer();
-      },3);
+      },2);
     
       let nodes = this.MosterNodes;
       for (let i = 0; i < nodes.length; i++) {
@@ -63,9 +64,11 @@ cc.Class({
       xhr.onreadystatechange = ()=>{
           if(xhr.readyState == 4 && xhr.status == 200){
               let returnData = JSON.parse(xhr.responseText);
-              // cc.log(returnData);
-              if(returnData.data.last_msg == '对局刚开始')
+              cc.log(returnData);
+              if(returnData.data.last_msg == '对局刚开始'){
+                  global.yourTurn = returnData.data.your_turn;
                   cc.director.loadScene('GameScene');
+              }
               
           }
       }

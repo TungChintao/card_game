@@ -80,7 +80,7 @@ export default class AI extends Model{
         }
         cc.log(dealArea,playerID,dealPoker.suit);
         this._Model.toSetArea(dealArea,playerID,dealPoker)
-        this._gameRound.roundTurn();
+        this._gameRound.localRoundTurn();
     };
 
 

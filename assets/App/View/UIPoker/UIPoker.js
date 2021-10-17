@@ -1,21 +1,7 @@
 import View from "../../../GameFramework/MVC/View"
 import {Area} from "../../Global/ConfigEsum"
+import {POINT_MAP} from '../../Global/ConfigEsum'
 
-const POINT_MAP = {
-    "1": "A",
-    "2": "2",
-    "3": "3",
-    "4": "4",
-    "5": "5",
-    "6": "6",
-    "7": "7",
-    "8": "8",
-    "9": "9",
-    "10": "10",
-    "11": "J",
-    "12": "Q",
-    "13": "K",
-}
 let UIPoker = cc.Class({
     extends: View,
 
@@ -90,13 +76,21 @@ let UIPoker = cc.Class({
         this.setStatus(poker.status);
     },
 
+    setPoker(suit,point){
+        this.pointLabel.string = `${POINT_MAP[point]}`;
+        this.pointLabel.node.color = (suit === 0 || suit === 2) ? this.blackTextColor:this.redTextColor;
+        if(point > 10) this.bigSuitSprite.spriteFrame = this.texFaces[point-11];
+        else this.bigSuitSprite.spriteFrame = this.bigSuits[suit];
+        this.smallSuitSprite.spriteFrame = this.smallSuits[suit];
+    },
+
     Refresh(){
         this.setStatus(this._poker.status);
     },
 
     onTouchEnd(){
         let pos = this.node.convertToNodeSpaceAR(Event).pos;
-        // console.log(this._poker);
+        console.log(this._poker);
         this._View.UIPokerOnTouch(this._poker, this.Area);
     },
 

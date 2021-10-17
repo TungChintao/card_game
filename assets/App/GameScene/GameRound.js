@@ -1,13 +1,18 @@
 import Model from "../../GameFramework/MVC/Model";
+import OnLine from "OnLine";
+import global from "../Global/global";
+import { Mode } from "../Global/ConfigEsum";
 
 export default class GameRound extends Model{
     round = 0;
     _player = [];
     _AIplayer = null;
+    _online = null;
 
     constructor(){
         super();
         this.round = 0;
+        this._online = new OnLine();
         this.on('GameOver', this.roundOver,this);
     };
 
@@ -28,10 +33,9 @@ export default class GameRound extends Model{
     UnBindAI(){
         this._AIplayer.on('AiDealCard', this._AIplayer.DealCard, this._AIplayer);
         this._AIplayer = null;
-
     };
 
-    roundTurn(){
+    localRoundTurn(){
         this._player[this.round].active = false;
         this.round = (this.round+1) % 2;
         this._player[this.round].active = true;
@@ -42,6 +46,11 @@ export default class GameRound extends Model{
         }
     };
 
+    onlineRoundTurn(){
+        this._player[0].active = !this._player[0].active;
+        global.yourTurn = this._player[0].active;
+    };
+
     Refresh(playerID){
         if(this._player[playerID])
             setTimeout(()=>{this._AIplayer.DealCard(this.round)},3000);
@@ -50,6 +59,7 @@ export default class GameRound extends Model{
     judgePlayerActive(){
         if(this._player[this.round].active) return true;
         return false;
+        
     };
 
     

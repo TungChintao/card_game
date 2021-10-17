@@ -1,7 +1,8 @@
 import UIUtil from "../../../GameFramework/Util/UIUtil";
 import UIPoker from "../../View/UIPoker/UIPoker"
 import View from "../../../GameFramework/MVC/View";
-import { Area } from "../../Global/ConfigEsum";
+import { Area, Mode } from "../../Global/ConfigEsum";
+import global from "../../Global/global";
 
 var GameView = cc.Class({
     extends: View,
@@ -10,6 +11,7 @@ var GameView = cc.Class({
 
         _Model: null,
         _gameRound: null,
+        _onLineManager: null,
         // _player: [],
 
         pokerPrefab: cc.Prefab,
@@ -67,14 +69,13 @@ var GameView = cc.Class({
         this._gameRound = null;
     },
 
-    // BindPlayer(player1,player2){
-    //     this._player.push(player1);
-    //     this._player.push(player2);
-    // },
+    BindOnline(online){
+        this._onLineManager = online;
+    },
 
-    // UnBindPlayer(){
-    //     this._player = [];
-    // },
+    UnBindOnline(){
+        this._onLineManager = null;
+    },
 
     InitPokers(pokers){
         // 创建所有扑克牌UI
@@ -99,9 +100,6 @@ var GameView = cc.Class({
     },
 
     toSetArea(poker,index, fromArea){
-
-        // this.offSendTouch();
-        cc.log('gameView toSetArea()')
         
         let node = poker.view.node;
         UIUtil.move(node, this.setArea);
@@ -134,8 +132,6 @@ var GameView = cc.Class({
     },
 
     toPlayList(poker, index, time, playerID){
-
-        // this.offSendTouch();
         
         let node = poker.view.node;
         if(playerID === 1){
@@ -164,12 +160,23 @@ var GameView = cc.Class({
         if(!this._gameRound.judgePlayerActive()) return;
         // if(!this._player[this._gameRound.round].active) return;
         if(pokerArea === Area.sendArea || pokerArea === this._gameRound.round){
-            if(this._Model.isTopIndexPoker(poker,this._gameRound.round,pokerArea)){
-                this.emit('UIPokerOnTouch',pokerArea,this._gameRound.round,poker);
-                this._gameRound.roundTurn();
-                // this._player[this.playerTurn].active = false;
-                // this.playerTurn = (this.playerTurn+1) % 2;
-                // this._player[this.playerTurn].active = true;
+            if(this._Model.isTopIndexPoker(poker,this._gameRound.round,pokerArea)){  
+                if(global.gameMode == Mode.Online){
+                   
+                    if(pokerArea === Area.sendArea)
+                        this.emit('DealPokerOnTouch');
+                    else{
+                        this.emit('UIPokerOnTouch',pokerArea,this._gameRound.round,poker);
+                        this._onLineManager.DealSelfPoker(poker.suit,poker.point,pokerArea);
+                    }
+                    // this._onLineManager.DealSelfPoker(poker.suit,poker.point,pokerArea);
+                    this._gameRound.onlineRoundTurn();
+                    this._onLineManager.DealOpponentPoker();
+                }
+                else{
+                    this.emit('UIPokerOnTouch',pokerArea,this._gameRound.round,poker);
+                    this._gameRound.localRoundTurn();
+                }
             }
         }
     },
@@ -183,8 +190,7 @@ var GameView = cc.Class({
     },
 
     backHomeScene(){
-        cc.log('ok');
-        // cc.director.loadScene('StartScene');
+        cc.director.loadScene(global.fromWhichScene);
     },
 
     showResult(winner){

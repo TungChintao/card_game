@@ -5,7 +5,7 @@ import GameRound from "GameRound";
 import AI from "AI"
 import global from "../Global/global";
 import {Mode} from "../Global/ConfigEsum"
-
+import OnLine from "OnLine";
 
 var GameCtrl = cc.Class({
     extends: cc.Component,
@@ -23,6 +23,8 @@ var GameCtrl = cc.Class({
         _player2: Player,
 
         _AIplayer: AI,
+
+        _onLineManager: OnLine,
 
     },
 
@@ -43,6 +45,8 @@ var GameCtrl = cc.Class({
         this._player1.Create(true,1);
         this._player2.Create(false,2);
 
+        this._gameRound.BindPlayer(this._player1,this._player2);
+
         this._AIplayer = new AI();
         if(global.gameMode == Mode.PVE){ 
             this._AIplayer.ContrlPlayer(this._player2);
@@ -50,9 +54,17 @@ var GameCtrl = cc.Class({
             this._AIplayer.BindRound(this._gameRound);
         }
 
+        if(global.gameMode == Mode.Online){
+            this._onLineManager = new OnLine();
+            this._onLineManager.BindModel(this._gameDB);
+            this._onLineManager.BindRound(this._gameRound);
+            this._gameView.BindOnline(this._onLineManager);
+            this._player1.active = global.yourTurn;
+            this._player1.SetName(global.selfInfo.name);
 
-        // this._gameView.BindPlayer(this._player1,this._player2);
-        this._gameRound.BindPlayer(this._player1,this._player2);
+            this._gameView.on('DealPokerOnTouch',this._onLineManager.DealPokerOnTouch,this._onLineManager);
+        }
+
         this._gameRound.BindAI(this._AIplayer);
        
         // this._gameDB.on('init_poker', this._gameView.InitPokers, this._gameView);
@@ -65,11 +77,15 @@ var GameCtrl = cc.Class({
         // this._gameView.on('sendArea_OnTouchedEnd',this._gameDB.toSetArea, this._gameDB);
         this._gameView.on('UIPokerOnTouch',this._gameDB.toSetArea,this._gameDB);
         this._gameView.on('AIManageBtnOnTouch',this.AiManageCard,this);
-        this._gameDB.shuffle();
+        if(global.gameMode == Mode.Online) this._gameDB.InitPoker(); 
+        else    this._gameDB.shuffle();
     },
 
     Play(){
         this._gameDB.toSendArea();
+        if(global.gameMode == Mode.Online)
+            if(!this._player1.active) 
+                this._onLineManager.DealOpponentPoker();
     },
 
     AiManageCard(playerID){

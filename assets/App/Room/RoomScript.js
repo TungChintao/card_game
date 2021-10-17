@@ -118,7 +118,7 @@ cc.Class({
             if(xhr.readyState == 4 && xhr.status == 200){
                 let returnData = JSON.parse(xhr.responseText);
                 global.selfRoomInfo = returnData.data.uuid;
-                cc.log(returnData);
+                cc.log(returnData.data.uuid);
                 this.toWaitScene();
             }
         }
