@@ -31,7 +31,10 @@ let SplashScript = cc.Class({
             xhr.onreadystatechange = ()=>{
                 if(xhr.readyState == 4 && xhr.status == 200){
                     let returnData = JSON.parse(xhr.responseText);
-                    cc.log(returnData.data);
+                    // cc.log(returnData.data);
+                    global.roomInfoList = returnData.data.games;
+                    global.page_num = returnData.data.total_page_num;
+                    cc.log(global.roomInfoList);
                     cc.director.loadScene('RoomScene');
                 }
             }

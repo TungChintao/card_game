@@ -7,6 +7,7 @@ export default{
     selfRoomInfo: '0',
     gameInfoList: [],
     roomInfoList: [],
+    page_num: 0,
     gameMode:0,
     waitTips: '等待对手加入中......',
     splashLabel: "It's a loading Scene",

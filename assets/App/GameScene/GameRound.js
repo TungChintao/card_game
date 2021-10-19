@@ -52,7 +52,7 @@ export default class GameRound extends Model{
     };
 
     Refresh(playerID){
-        if(this._player[playerID])
+        if(this._player[playerID].active)
             setTimeout(()=>{this._AIplayer.DealCard(this.round)},3000);
     };
 

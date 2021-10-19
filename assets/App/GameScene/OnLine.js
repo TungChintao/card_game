@@ -59,7 +59,7 @@ export default class OnLine extends Model{
                 clearInterval(timeID);
                 this._gameRound.onlineRoundTurn();  
             }
-        },1000)
+        },600);
     };
 
     GetOpponentPoker(){

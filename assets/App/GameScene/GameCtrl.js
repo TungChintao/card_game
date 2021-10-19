@@ -77,6 +77,7 @@ var GameCtrl = cc.Class({
         // this._gameView.on('sendArea_OnTouchedEnd',this._gameDB.toSetArea, this._gameDB);
         this._gameView.on('UIPokerOnTouch',this._gameDB.toSetArea,this._gameDB);
         this._gameView.on('AIManageBtnOnTouch',this.AiManageCard,this);
+        this._gameView.on('CancelAIManage',this.CancelAI,this);
         if(global.gameMode == Mode.Online) this._gameDB.InitPoker(); 
         else    this._gameDB.shuffle();
     },
@@ -88,12 +89,14 @@ var GameCtrl = cc.Class({
                 this._onLineManager.DealOpponentPoker();
     },
 
-    AiManageCard(playerID){
-        if(playerID === 0)
-            this._AIplayer.ContrlPlayer(this._player1);
-        else
-            this._AIplayer.ContrlPlayer(this._player2);
-        this._gameRound.Refresh(playerID);
+    AiManageCard(){
+        this._AIplayer.ContrlPlayer(this._player1);
+        this._gameRound.Refresh(0);
+    },
+
+    CancelAI(){
+        this._AIplayer.UnContrlPlayer(this._player1);
+
     },
 
 
