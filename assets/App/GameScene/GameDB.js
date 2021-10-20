@@ -146,10 +146,12 @@ export default class GameDB extends Model{
                 }
             },1700);
 
-            setTimeout(()=>{
-                if(this._sendPokers.length === 0)
-                this.judgeWinner();
-            },2200);
+            setTimeout(()=>{ 
+                if(this._sendPokers.length === 0){
+                    this.judgeWinner();
+                    global.yourTurn = true;
+                }
+            },2500);
                 
 
         }
@@ -157,13 +159,13 @@ export default class GameDB extends Model{
             let poker = this._playerPokers[playerID][dealPoker.suit].PopPoker();
             this._playerPokersNum[playerID]--;
             this._setPokers.push(poker);
-            this.emit('clickToSetArea', poker,0,dealArea);
+            this.emit('clickToSetArea', poker,this._setPokers.length,dealArea);
 
             setTimeout(()=>{
                 if(setSuit === dealPoker.suit){
                     this.toPlayList(playerID);
                 }
-            },1700);
+            },800);
         }
     };
 
@@ -189,15 +191,20 @@ export default class GameDB extends Model{
     };
 
     CmpCardNum(){
-        if(this._playerPokersNum[0] > this._playerPokersNum[1]) return 2;
-        else if(this._playerPokers[0] < this._playerPokersNum[1]) return 1;
-        else return 0;
+        if(this._playerPokersNum[0] > this._playerPokersNum[1]) return 1;
+       
+        else if(this._playerPokersNum[0] < this._playerPokersNum[1]) return 0;
+        
+        else return -1;
+        
     }
 
     judgeWinner(){
         let winner = this.CmpCardNum();
         // cc.log('judge');
-        this.emit("GameOver",winner);
+        
+        global.winner = winner+1;
+        this.emit("GameOver",winner+1);
     };
 
     exchangePoker(suit,point){

@@ -39,7 +39,6 @@ cc.Class({
         this.joinBtnBG.node.color = cc.Color.BLACK.fromHEX("#606363");
         this.joinBtnBG.node.getChildByName('JoinLabel').color = cc.Color.BLACK.fromHEX("#A4A8B3")
         this.joinBtn.interactable = false;
-        
     },
 
     

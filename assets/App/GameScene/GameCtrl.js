@@ -73,6 +73,7 @@ var GameCtrl = cc.Class({
         // this._gameDB.on('open_clickToSetArea', this._gameView.openSendTouch, this._gameView);
         // this._gameDB.on('off_clickToSetArea',this._gameView.offSendTouch, this._gameView);
         // this._gameDB.on('toPlayList', this._gameView.toPlayList, this._gameView);
+        this._gameDB.on('judgeWinner',this.UnBind,this);
 
         // this._gameView.on('sendArea_OnTouchedEnd',this._gameDB.toSetArea, this._gameDB);
         this._gameView.on('UIPokerOnTouch',this._gameDB.toSetArea,this._gameDB);
@@ -85,9 +86,13 @@ var GameCtrl = cc.Class({
     Play(){
         this._gameDB.toSendArea();
         if(global.gameMode == Mode.Online)
-            if(!this._player1.active) 
+            if(!this._player1.active) {
+                this._gameView.turnRoundMessage('对手回合');
                 this._onLineManager.DealOpponentPoker();
+            }
     },
+
+    UnBind(){},
 
     AiManageCard(){
         this._AIplayer.ContrlPlayer(this._player1);

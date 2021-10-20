@@ -8,6 +8,7 @@ export default class GameRound extends Model{
     _player = [];
     _AIplayer = null;
     _online = null;
+    roundTurnMessage = ['你的回合','对手回合'];
 
     constructor(){
         super();
@@ -39,16 +40,20 @@ export default class GameRound extends Model{
         this._player[this.round].active = false;
         this.round = (this.round+1) % 2;
         this._player[this.round].active = true;
+        this.emit('TurnRoundMessage', this.roundTurnMessage[this.round]);
         if(this._player[this.round].AIcontrl) {
             // this.emit('AiDealCard',this.round);
             // cc.log('contrl round');
-            setTimeout(()=>{this._AIplayer.DealCard(this.round)},3000);
+            // setTimeout(()=>{this._AIplayer.DealCard(this.round)},3000);
+            this._AIplayer.DealCard(this.round);
         }
     };
 
     onlineRoundTurn(){
         this._player[0].active = !this._player[0].active;
         global.yourTurn = this._player[0].active;
+        let roundMessage = this._player[0].active ? this.roundTurnMessage[0]: this.roundTurnMessage[1];
+        this.emit('TurnRoundMessage', roundMessage);
     };
 
     Refresh(playerID){

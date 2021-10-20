@@ -14,6 +14,7 @@ export default{
     fromWhichScene: 'HallScene',
     toWhichScene: 'StartScene',
     yourTurn: false,
+    winner: 1,
 }
 
 

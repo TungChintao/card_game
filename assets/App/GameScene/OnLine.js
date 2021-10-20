@@ -13,7 +13,7 @@ export default class OnLine extends Model{
     _gameRound = null;
 
     _dataStr = null;
-    _firstCallModel = true;
+    _lastMessageFlag = false;
 
     BindModel(model){
         this._gameModel = model;
@@ -33,7 +33,6 @@ export default class OnLine extends Model{
 
     DealPokerOnTouch(){
         this.executeOperation();
-       
     };
 
     parseData(){
@@ -55,11 +54,12 @@ export default class OnLine extends Model{
     DealOpponentPoker(){
         let timeID = setInterval(()=>{
             this.GetOpponentPoker();
+            cc.log(global.yourTurn);
             if(global.yourTurn){ 
                 clearInterval(timeID);
                 this._gameRound.onlineRoundTurn();  
             }
-        },600);
+        },1000);
     };
 
     GetOpponentPoker(){
@@ -78,14 +78,12 @@ export default class OnLine extends Model{
             else if(data.area == Area.player2List) 
                 dealPoker = this._gameModel.playerGroupTopPoker(1,data.suit);
             this._gameModel.toSetArea(data.area,1,dealPoker);
-            this._firstCallModel = false;
         }
     };
 
     DealSelfPoker(pokerSuit,pokerPoint,pokerArea){
         cc.log('dealself')
         // this._gameRound.onlineRoundTurn();
-        this._firstCallModel = true;
         let type = -1;
         let suit = '0';
         let point = pokerPoint;
@@ -99,7 +97,7 @@ export default class OnLine extends Model{
         this.executeOperation(type,suit,point);
     }
 
-    InitXhr(url,method,parm=false){
+    InitXhr(url,method,parm=false,){
         let xhr = new XMLHttpRequest();
         xhr.open(method,url);
         xhr.setRequestHeader('Authorization', 'Bearer ' + global.selfInfo.token);
@@ -109,16 +107,27 @@ export default class OnLine extends Model{
 
     fetchOperation(){
         let url = URL.fetchOpUrl + global.selfRoomInfo + '/last';
+        if(this._lastMessageFlag) url = URL.fetchOpUrl + global.selfRoomInfo
         let xhr = this.InitXhr(url,'GET');
         xhr.send();
 
         xhr.onreadystatechange = ()=>{
             if(xhr.readyState == 4 && xhr.status == 200){
                 let returnData = JSON.parse(xhr.responseText);
-                // cc.log(returnData);
-                if(returnData.code == 200 && returnData.data.your_turn){             
-                    global.yourTurn = returnData.data.your_turn;
-                    this._dataStr = returnData.data.last_code;
+                cc.log(returnData);
+                if(returnData.code == 200){
+                    if(this._lastMessageFlag){
+                        global.yourTurn = true;
+                        this._dataStr = returnData.data.last;
+                        return;
+                    }
+                    if(returnData.data.your_turn){
+                        global.yourTurn = returnData.data.your_turn;
+                        this._dataStr = returnData.data.last_code;
+                    }
+                }
+                else if(returnData.code == 400){
+                    this._lastMessageFlag = true;
                 }
             }
         }
@@ -140,8 +149,9 @@ export default class OnLine extends Model{
             if(xhr.readyState == 4 && xhr.status == 200){
                 let returnData = JSON.parse(xhr.responseText);
                 if(returnData.code === 200){
-                    cc.log(returnData);
+                 
                     if(data == null){
+                        cc.log(returnData);
                         this._dataStr = returnData.data.last_code;
                         let data = this.parseData();
                         data.point = REVERSE_POINT_MAP[data.point];

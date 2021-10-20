@@ -49,16 +49,15 @@ export default class AI extends Model{
         }
         else{
             let setTopPokerSuit = this._Model.setTopPoker().suit;
-            if(this._Model.CmpCardNum()%2 != playerID || 
+            let lessPokerPlayerID = this._Model.CmpCardNum();
+            // cc.log(lessPokerPlayerID);
+            if(lessPokerPlayerID === playerID || lessPokerPlayerID === -1 ||
             this._Model.playerPokersNum[playerID] === 0 ||
             this._Model.playerPokersNum[playerID] === this._Model.playerPokers[playerID][setTopPokerSuit].pokerNum){
-                cc.log('2');
-                cc.log(this._Model.CmpCardNum()%2)
                 dealPoker = this._Model.sendTopPoker();
                 dealArea = Area.sendArea;
             }
             else{
-                cc.log('3');
                 let maxNumSuit = 0;
                 let firstIndex = true;
                 for(let suit = 0;suit<4;suit++){
@@ -78,9 +77,11 @@ export default class AI extends Model{
                 else dealArea = Area.player2List;
             }
         }
-        cc.log(dealArea,playerID,dealPoker.suit);
-        this._Model.toSetArea(dealArea,playerID,dealPoker)
-        this._gameRound.localRoundTurn();
+        // cc.log(dealArea,playerID,dealPoker.suit);
+        setTimeout(()=>{
+            this._Model.toSetArea(dealArea,playerID,dealPoker);
+            setTimeout(()=>{this._gameRound.localRoundTurn()},1000);
+        },2000);
     };
 
 

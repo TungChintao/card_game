@@ -12,7 +12,6 @@ var GameView = cc.Class({
         _Model: null,
         _gameRound: null,
         _onLineManager: null,
-        // _player: [],
 
         pokerPrefab: cc.Prefab,
         initPokerArea: cc.Node,
@@ -24,13 +23,15 @@ var GameView = cc.Class({
 
         player2List: [cc.Node],
 
+        roundMessage: cc.Label,
+        pokerMessageBtn: cc.Button,
+
         homeBtn: cc.Button,
 
         AiManageBtn: cc.Button,
         AiManageLabel: cc.Label,
         _touchAIBtnFirst: true,
 
-        playerTurn: 0,
     },
 
     onLoad(){
@@ -40,11 +41,14 @@ var GameView = cc.Class({
         // 在线托管暂时未写
         if(global.gameMode === Mode.PVP || global.gameMode === Mode.Online) 
             this.AiManageBtn.node.active = false;
+        
     },
 
     start(){
-        
-        // this.sendArea.on('touchend',this.sendOnTouchEnd, this);
+    },
+
+    update(){
+
     },
 
     AiContrl(){
@@ -78,10 +82,12 @@ var GameView = cc.Class({
 
     BindRound(gameRound){
         this._gameRound = gameRound;
+        this._gameRound.on('TurnRoundMessage',this.turnRoundMessage,this);
     },
 
     UnBindRound(){
         this._gameRound = null;
+        this._gameRound.off('TurnRoundMessage',this.turnRoundMessage,this);
     },
 
     BindOnline(online){
@@ -100,6 +106,16 @@ var GameView = cc.Class({
             uiPoker.node.y = 0.25*index;
             this.initPokerArea.addChild(uiPoker.node);
         });
+    },
+
+    RefreshPokerNum(pokerSuit,RefreshFlag){
+        let childName = 'numLabel'
+        let childNode;
+        if(RefreshFlag == 0)
+            childNode = this.player1List[pokerSuit].getChildByName(childName);
+        else
+            childNode = this.player2List[pokerSuit].getChildByName(childName);
+        childNode.getComponent(cc.Label).string = this._Model.playerGroupPokerNum(RefreshFlag, pokerSuit)
     },
 
 
@@ -130,7 +146,7 @@ var GameView = cc.Class({
                 })
                 .to(0.3,{scaleX:1.2})
                 .delay(0.5)
-                .to(0.5, {position: cc.v2(0.25*index,0.25*index)})
+                .to(0.5, {position: cc.v2(0.25*index,0.25*index)})  // .to(0.5, {position: cc.v2(index*30,0)})
                 .start();
         }
         else{
@@ -139,11 +155,10 @@ var GameView = cc.Class({
             .delay(0.1)
             .to(0.5, {position: cc.v2(0,0)})
             .start();
+
+            this.RefreshPokerNum(poker.suit,fromArea);
         }
 
-        // setTimeout(()=>{
-        //     this.openSendTouch();
-        // },1600);
     },
 
     toPlayList(poker, index, time, playerID){
@@ -162,6 +177,9 @@ var GameView = cc.Class({
             .delay(time-0.1*index)
             .to(0.5, {position: cc.v2(0,0)})
             .start();
+        
+        this.RefreshPokerNum(poker.suit,playerID-1);
+       
         
         // setTimeout(()=>{
         //     this.openSendTouch();
@@ -202,6 +220,10 @@ var GameView = cc.Class({
         uiPoker.Init(poker,this);
         //uiPoker.node.setPosition(0,0);
         return uiPoker;
+    },
+
+    turnRoundMessage(roundMessage){
+        this.roundMessage.string = roundMessage;
     },
 
     backHomeScene(){

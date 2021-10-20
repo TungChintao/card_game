@@ -1489,7 +1489,7 @@
       "__id__": 24
     },
     "_children": [],
-    "_active": true,
+    "_active": false,
     "_components": [
       {
         "__id__": 32
@@ -4798,7 +4798,8 @@
       "__uuid__": "76ee2174-90a4-4200-9e47-8ee925136def"
     },
     "_spawnCount": 0,
-    "_totalCount": 0,
+    "_page": [],
+    "_pageTurn": 0,
     "curNum": 1,
     "curTotal": 1,
     "pageLabel": {
