@@ -3,6 +3,10 @@ import UIPoker from "../../View/UIPoker/UIPoker"
 import View from "../../../GameFramework/MVC/View";
 import { Area, Mode } from "../../Global/ConfigEsum";
 import global from "../../Global/global";
+import PokerMessage from "../../Panel/PokerMessage"
+
+
+// 采用MVC架构  GameView类负责前台界面UI----------
 
 var GameView = cc.Class({
     extends: View,
@@ -13,7 +17,17 @@ var GameView = cc.Class({
         _gameRound: null,
         _onLineManager: null,
 
+        // 计数器预制，控制类，按钮---------------
+        pokerMessagePrefab: cc.Prefab,
+        _pokerMessage: PokerMessage,
+        MessageButton: cc.Button,
+        _touchMessageBtnFirst: true,
+
+        // 卡牌预制-------------
         pokerPrefab: cc.Prefab,
+
+        // 节点信息 -------------
+
         initPokerArea: cc.Node,
 
         sendArea: cc.Node,
@@ -23,11 +37,16 @@ var GameView = cc.Class({
 
         player2List: [cc.Node],
 
+        // 回合信息参数------------
+
         roundMessage: cc.Label,
         pokerMessageBtn: cc.Button,
 
+        // 返回button---------------
+
         homeBtn: cc.Button,
 
+        // 托管控制参数---------------
         AiManageBtn: cc.Button,
         AiBtnLabel: cc.Label,
         AiManageLabel: cc.Label,
@@ -35,15 +54,20 @@ var GameView = cc.Class({
 
     },
 
+    // 初始化
     onLoad(){
         this.AiManageLabel.node.active = false;
         this.homeBtn.node.on('touchend', this.backHomeScene,this);
         this.AiManageBtn.node.on('touchend',this.AiContrl,this);
+        this.MessageButton.node.on('touchend',this.switchPancel,this);
         if(global.gameMode === Mode.PVP) 
             this.AiManageBtn.node.active = false;
         
+        this.CreatePokerPancel();       // 创建计数板
+        
     },
 
+    // 托管UI变化
     AiContrl(){
         if(this._touchAIBtnFirst){
             this.emit('AIManageBtnOnTouch');
@@ -56,6 +80,19 @@ var GameView = cc.Class({
             this.AiBtnLabel.string = '托管';
             this.AiManageLabel.node.active = false;
             this._touchAIBtnFirst = true;
+        }
+    },
+
+    switchPancel(){
+        if(this._touchMessageBtnFirst){
+            this._touchMessageBtnFirst = false;
+            this.MessageButton.node.getChildByName('Label').getComponent(cc.Label).string = '关闭';
+            this._pokerMessage.showPancel();
+        }
+        else{
+            this._touchMessageBtnFirst = true;
+            this.MessageButton.node.getChildByName('Label').getComponent(cc.Label).string = '记牌器';
+            this._pokerMessage.hidePancel();
         }
     },
 
@@ -103,6 +140,7 @@ var GameView = cc.Class({
         });
     },
 
+    // UI界面刷新显示玩家手牌数
     RefreshPokerNum(pokerSuit,RefreshFlag){
         let childName = 'numLabel'
         let childNode;
@@ -113,7 +151,30 @@ var GameView = cc.Class({
         childNode.getComponent(cc.Label).string = this._Model.playerGroupPokerNum(RefreshFlag, pokerSuit)
     },
 
+    // 更新卡牌计数板   参数为数组
+    UpdatePokerPancel(playerArea=false, setArea=false, sendArea=false){
+           
+        if(playerArea){ 
+            let playerMessage = this._Model.playerPokersNum;
+            this._pokerMessage.updatePlayerLabel(playerMessage);
+        }
+        if(setArea){ 
+            let setMessage = this._Model.setPokerSuitNum.concat();
+            setMessage.push(this._Model.setPokerNum());
+            cc.log(setMessage);
+            this._pokerMessage.updateSetLabel(setMessage);
+        }
+        
+        if(sendArea) {
+            let sendMessage =  this._Model.sendPokerSuitNum.concat();
+            sendMessage.push(this._Model.sendPokerNum());
+            cc.log(sendMessage);
+            this._pokerMessage.updateSendLabel(sendMessage);
+        }
+    },
 
+
+    // 卡牌移动至抽牌区
     toSendArea(poker, index){
         let node = poker.view.node;
         UIUtil.move(node,this.sendArea);
@@ -125,6 +186,7 @@ var GameView = cc.Class({
             .start();
     },
 
+    // 卡牌移动至放置区
     toSetArea(poker,index, fromArea){
         
         let node = poker.view.node;
@@ -143,6 +205,7 @@ var GameView = cc.Class({
                 .delay(0.3)
                 .to(0.5, {position: cc.v2(0.25*index,0.25*index)})  // .to(0.5, {position: cc.v2(index*30,0)})
                 .start();
+            this.UpdatePokerPancel(false,true,true);
         }
         else{
 
@@ -152,10 +215,11 @@ var GameView = cc.Class({
             .start();
 
             this.RefreshPokerNum(poker.suit,fromArea);
+            this.UpdatePokerPancel(true,true,false);
         }
-
     },
 
+    // 卡牌移动至玩家手牌区
     toPlayList(poker, index, time, playerID){
         
         let node = poker.view.node;
@@ -174,27 +238,28 @@ var GameView = cc.Class({
             .start();
         
         this.RefreshPokerNum(poker.suit,playerID-1);
+        this.UpdatePokerPancel(true,true,false);
        
-        
-        // setTimeout(()=>{
-        //     this.openSendTouch();
-        // },1600);
     },
 
+    // 卡牌被点击后判断如何显示动画
     UIPokerOnTouch(poker,pokerArea){
+
         // 1.这张牌是抽牌区或玩家出牌区的
-        // 2.这种牌是最上方的
+        // 2.这张牌是目前牌堆最上方的
         // 3.这张牌是玩家X翻开的
-        if(!this._gameRound.judgePlayerActive()) return;
-        // if(!this._player[this._gameRound.round].active) return;
+
+        if(!this._gameRound.judgePlayerActive()) return;    // 判断是否为该玩家的回合
+     
         if(pokerArea === Area.sendArea || pokerArea === this._gameRound.round){
             if(this._Model.isTopIndexPoker(poker,this._gameRound.round,pokerArea)){  
+                cc.log('ui1')
                 if(global.gameMode == Mode.Online){
-                   
+
                     if(pokerArea === Area.sendArea)
                         this.emit('DealPokerOnTouch');
                     else{
-                        this.emit('UIPokerOnTouch',pokerArea,this._gameRound.round,poker);
+                        this.emit('UIPokerOnTouch',pokerArea,this._gameRound.round,poker, poker.suit);
                         this._onLineManager.DealSelfPoker(poker.suit,poker.point,pokerArea);
                     }
                     // this._onLineManager.DealSelfPoker(poker.suit,poker.point,pokerArea);
@@ -202,19 +267,27 @@ var GameView = cc.Class({
                     this._onLineManager.DealOpponentPoker();
                 }
                 else{
-                    this.emit('UIPokerOnTouch',pokerArea,this._gameRound.round,poker);
+                    this.emit('UIPokerOnTouch',pokerArea,this._gameRound.round,poker,poker.suit);
                     this._gameRound.localRoundTurn();
                 }
             }
         }
     },
 
+
+    // 创建卡牌UI
     CreateUIPoker(poker){
         let uiPokerNode = cc.instantiate(this.pokerPrefab);
         let uiPoker = uiPokerNode.getComponent(UIPoker);
         uiPoker.Init(poker,this);
         //uiPoker.node.setPosition(0,0);
         return uiPoker;
+    },
+
+    CreatePokerPancel(){
+        this._pokerMessage = cc.instantiate(this.pokerMessagePrefab).getComponent(PokerMessage);
+        this.node.addChild(this._pokerMessage.node);
+        this._pokerMessage.hidePancel();
     },
 
     turnRoundMessage(roundMessage){
@@ -228,7 +301,4 @@ var GameView = cc.Class({
     showResult(winner){
         this.emit('gameOver',winner);
     }
-
-
-
 });

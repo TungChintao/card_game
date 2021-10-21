@@ -66,13 +66,16 @@ export default class GameDB extends Model{
     _pokers = [];
     // 抽牌区扑克
     _sendPokers = [];
+    // 抽牌区各花色扑克数
+    _sendPokerSuitNum = [13,13,13,13];
     // 放置区扑克
     _setPokers = [];
+    // 放置区各花色扑克数
+    _setPokerSuitNum = [0,0,0,0];
     // 玩家扑克组
     _playerPokers = [[],[]];
     // 玩家手牌数
     _playerPokersNum = [0,0];
-
 
 
     constructor(){
@@ -95,8 +98,6 @@ export default class GameDB extends Model{
                 this._pokers.push(temp_poker);
             }
         }
-
-        // this.on('UIPokerOnTouch',this.toSetArea, this);
     };
 
     // 洗牌
@@ -126,9 +127,11 @@ export default class GameDB extends Model{
         // cc.log(this._sendPokers.length);    
     };
 
-    toSetArea(dealArea,playerID, dealPoker){
+    // 从抽牌区or玩家区到放置区
+    toSetArea(dealArea,playerID, dealPoker, dataSuit){
         let setSuit = -1;
         let setLen = this._setPokers.length-1;
+        this._setPokerSuitNum[dataSuit]++;
         if(setLen >= 0)
             setSuit = this._setPokers[setLen].suit;
 
@@ -138,6 +141,7 @@ export default class GameDB extends Model{
             poker.status = !poker.status;
     
             this._setPokers.push(poker);
+            this._sendPokerSuitNum[dataSuit]--;
             this.emit('clickToSetArea',poker,this._setPokers.length,dealArea);
             
             setTimeout(()=>{
@@ -145,6 +149,8 @@ export default class GameDB extends Model{
                     this.toPlayList(playerID);
                 }
             },1600);
+
+            if(this._sendPokers.length === 0) this.emit('GameOver');
 
             setTimeout(()=>{ 
                 if(this._sendPokers.length === 0){
@@ -170,6 +176,7 @@ export default class GameDB extends Model{
     };
 
     toPlayList(id){
+        this._setPokerSuitNum = [0,0,0,0];
         setLen = this._setPokers.length;
         for(let i = 0;i < setLen; i++){
             let poker = this._setPokers.pop();
@@ -227,7 +234,9 @@ export default class GameDB extends Model{
 
     get pokers() { return this._pokers; };
     get sendPokers() { return this._sendPokers; };
+    get sendPokerSuitNum() { return this._sendPokerSuitNum; };
     get setPokers() { return this._setPokers; };
+    get setPokerSuitNum() { return this._setPokerSuitNum;};
     get playerPokers() { return this._playerPokers; };
     get playerPokersNum() { return this._playerPokersNum; };
 

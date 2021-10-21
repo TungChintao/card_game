@@ -15,7 +15,6 @@ cc.Class({
     },
 
     onLoad(){
-        this.node.on('OneMoreGame',this.NewGame,this);
         this.node.on('returnLastScene',this.returnLastScene,this);
     },
 
@@ -34,16 +33,10 @@ cc.Class({
     },
 
     showResult(winner){
+        this.ExitGame(this._gameCtrl);
         let gameOver = cc.instantiate(this.gameOverPrefab);
 
         this.node.addChild(gameOver);
-
-    },
-
-    NewGame(){
-        this.ExitGame(this._gameCtrl);
-        this._gameCtrl = new GameCtrl();
-        this._gameCtrl.Init(this._gameView);
     },
 
     ExitGame(gameCtrl){

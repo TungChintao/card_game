@@ -77,7 +77,7 @@ export default class OnLine extends Model{
             }
             else if(data.area == Area.player2List) 
                 dealPoker = this._gameModel.playerGroupTopPoker(1,data.suit);
-            this._gameModel.toSetArea(data.area,1,dealPoker);
+            this._gameModel.toSetArea(data.area,1,dealPoker,data.suit);
         }
     };
 
@@ -157,7 +157,7 @@ export default class OnLine extends Model{
                         data.point = REVERSE_POINT_MAP[data.point];
                         this._gameModel.exchangePoker(data.suit,data.point);
                         let dealPoker = this._gameModel.sendTopPoker();
-                        this._gameModel.toSetArea(data.area,0,dealPoker);
+                        this._gameModel.toSetArea(data.area,0,dealPoker, data.suit);
                     }
                 }
             }

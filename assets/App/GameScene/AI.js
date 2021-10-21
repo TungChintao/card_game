@@ -88,17 +88,18 @@ export default class AI extends Model{
             }
         }
         // cc.log(dealArea,playerID,dealPoker.suit);
-        if(global.gameMode == Mode.Online)
-            setTimeout(()=>{this._View.UIPokerOnTouch(dealPoker,dealArea)},500);
+        // if(global.gameMode == Mode.Online)
+        setTimeout(()=>{this._View.UIPokerOnTouch(dealPoker,dealArea);},500);
             
         
-        else{
-            setTimeout(()=>{
-                this._Model.toSetArea(dealArea,playerID,dealPoker);
-                setTimeout(()=>{this._gameRound.localRoundTurn()},900);
-            },1900);
-        }
+    //     else{
+    //         setTimeout(()=>{
+    //             this._Model.toSetArea(dealArea,playerID,dealPoker);
+    //             setTimeout(()=>{
+    //                 this._View.UpdatePokerPancel(false,true,true);
+    //                 this._gameRound.localRoundTurn()},900);
+    //         },1900);
+    //     }
     };
-
 
 };
