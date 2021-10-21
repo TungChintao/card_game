@@ -54,11 +54,14 @@ export default class GameRound extends Model{
         global.yourTurn = this._player[0].active;
         let roundMessage = this._player[0].active ? this.roundTurnMessage[0]: this.roundTurnMessage[1];
         this.emit('TurnRoundMessage', roundMessage);
+        if(this._player[0].AIcontrl){
+             setTimeout(()=>{this._AIplayer.DealCard(0)},900);
+        }
     };
 
     Refresh(playerID){
         if(this._player[playerID].active)
-            setTimeout(()=>{this._AIplayer.DealCard(this.round)},3000);
+        this._AIplayer.DealCard(this.round);//setTimeout(()=>{this._AIplayer.DealCard(this.round)},3000);
     };
 
     judgePlayerActive(){

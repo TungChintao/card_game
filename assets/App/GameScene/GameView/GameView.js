@@ -29,6 +29,7 @@ var GameView = cc.Class({
         homeBtn: cc.Button,
 
         AiManageBtn: cc.Button,
+        AiBtnLabel: cc.Label,
         AiManageLabel: cc.Label,
         _touchAIBtnFirst: true,
 
@@ -38,27 +39,21 @@ var GameView = cc.Class({
         this.AiManageLabel.node.active = false;
         this.homeBtn.node.on('touchend', this.backHomeScene,this);
         this.AiManageBtn.node.on('touchend',this.AiContrl,this);
-        // 在线托管暂时未写
-        if(global.gameMode === Mode.PVP || global.gameMode === Mode.Online) 
+        if(global.gameMode === Mode.PVP) 
             this.AiManageBtn.node.active = false;
         
-    },
-
-    start(){
-    },
-
-    update(){
-
     },
 
     AiContrl(){
         if(this._touchAIBtnFirst){
             this.emit('AIManageBtnOnTouch');
             this.AiManageLabel.node.active = true;
+            this.AiBtnLabel.string = '取消';
             this._touchAIBtnFirst = false;
         }
         else{
             this.emit('CancelAIManage');
+            this.AiBtnLabel.string = '托管';
             this.AiManageLabel.node.active = false;
             this._touchAIBtnFirst = true;
         }
@@ -145,7 +140,7 @@ var GameView = cc.Class({
                     poker.view.Refresh();
                 })
                 .to(0.3,{scaleX:1.2})
-                .delay(0.5)
+                .delay(0.3)
                 .to(0.5, {position: cc.v2(0.25*index,0.25*index)})  // .to(0.5, {position: cc.v2(index*30,0)})
                 .start();
         }

@@ -70,13 +70,10 @@
       },
       {
         "__id__": 240
-      },
-      {
-        "__id__": 241
       }
     ],
     "_prefab": {
-      "__id__": 242
+      "__id__": 241
     },
     "_opacity": 255,
     "_color": {
@@ -4256,7 +4253,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "New Label",
+    "_name": "BtnLabel",
     "_objFlags": 0,
     "_parent": {
       "__id__": 111
@@ -4402,7 +4399,7 @@
       "ctor": "Float64Array",
       "array": [
         0,
-        -50,
+        -40,
         0,
         0,
         0,
@@ -9174,24 +9171,13 @@
     "AiManageBtn": {
       "__id__": 122
     },
+    "AiBtnLabel": {
+      "__id__": 117
+    },
     "AiManageLabel": {
       "__id__": 120
     },
     "_touchAIBtnFirst": true,
-    "_id": ""
-  },
-  {
-    "__type__": "51851mYNstOvq3+41CZV0xL",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 1
-    },
-    "_enabled": true,
-    "id": 1,
-    "uid": 0,
-    "active": true,
-    "AIcontrl": false,
     "_id": ""
   },
   {

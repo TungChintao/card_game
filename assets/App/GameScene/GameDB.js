@@ -144,7 +144,7 @@ export default class GameDB extends Model{
                 if(this._sendPokers.pop().suit === setSuit) {
                     this.toPlayList(playerID);
                 }
-            },1700);
+            },1600);
 
             setTimeout(()=>{ 
                 if(this._sendPokers.length === 0){
@@ -165,7 +165,7 @@ export default class GameDB extends Model{
                 if(setSuit === dealPoker.suit){
                     this.toPlayList(playerID);
                 }
-            },800);
+            },700);
         }
     };
 

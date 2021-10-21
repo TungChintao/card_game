@@ -1,7 +1,9 @@
 import Model from "../../GameFramework/MVC/Model";
-import { Area } from "../Global/ConfigEsum";
+import { Area, Mode } from "../Global/ConfigEsum";
+import global from "../Global/global";
 
 export default class AI extends Model{
+    _View = null;
     _Model = null;
     _gameRound = null;
 
@@ -16,6 +18,14 @@ export default class AI extends Model{
 
     UnContrlPlayer(player){
         player.AIcontrl = false;
+    };
+
+    BindView(View){
+        this._View = View;
+    };
+
+    UnBindView(){
+        this._View = null;
     };
 
     BindModel(Model){
@@ -78,10 +88,16 @@ export default class AI extends Model{
             }
         }
         // cc.log(dealArea,playerID,dealPoker.suit);
-        setTimeout(()=>{
-            this._Model.toSetArea(dealArea,playerID,dealPoker);
-            setTimeout(()=>{this._gameRound.localRoundTurn()},1000);
-        },2000);
+        if(global.gameMode == Mode.Online)
+            setTimeout(()=>{this._View.UIPokerOnTouch(dealPoker,dealArea)},500);
+            
+        
+        else{
+            setTimeout(()=>{
+                this._Model.toSetArea(dealArea,playerID,dealPoker);
+                setTimeout(()=>{this._gameRound.localRoundTurn()},900);
+            },1900);
+        }
     };
 
 

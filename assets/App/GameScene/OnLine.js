@@ -59,7 +59,7 @@ export default class OnLine extends Model{
                 clearInterval(timeID);
                 this._gameRound.onlineRoundTurn();  
             }
-        },1000);
+        },900);
     };
 
     GetOpponentPoker(){
@@ -97,7 +97,7 @@ export default class OnLine extends Model{
         this.executeOperation(type,suit,point);
     }
 
-    InitXhr(url,method,parm=false,){
+    InitXhr(url,method,parm=false){
         let xhr = new XMLHttpRequest();
         xhr.open(method,url);
         xhr.setRequestHeader('Authorization', 'Bearer ' + global.selfInfo.token);

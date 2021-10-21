@@ -48,10 +48,11 @@ var GameCtrl = cc.Class({
         this._gameRound.BindPlayer(this._player1,this._player2);
 
         this._AIplayer = new AI();
+        this._AIplayer.BindModel(this._gameDB);
+        this._AIplayer.BindView(this._gameView);
+        this._AIplayer.BindRound(this._gameRound);
         if(global.gameMode == Mode.PVE){ 
             this._AIplayer.ContrlPlayer(this._player2);
-            this._AIplayer.BindModel(this._gameDB);
-            this._AIplayer.BindRound(this._gameRound);
         }
 
         if(global.gameMode == Mode.Online){
@@ -59,6 +60,7 @@ var GameCtrl = cc.Class({
             this._onLineManager.BindModel(this._gameDB);
             this._onLineManager.BindRound(this._gameRound);
             this._gameView.BindOnline(this._onLineManager);
+           
             this._player1.active = global.yourTurn;
             this._player1.SetName(global.selfInfo.name);
 
@@ -67,15 +69,8 @@ var GameCtrl = cc.Class({
 
         this._gameRound.BindAI(this._AIplayer);
        
-        // this._gameDB.on('init_poker', this._gameView.InitPokers, this._gameView);
-        // this._gameDB.on('toSendArea', this._gameView.toSendArea, this._gameView);
-        // this._gameDB.on('clickToSetArea',this._gameView.toSetArea, this._gameView);
-        // this._gameDB.on('open_clickToSetArea', this._gameView.openSendTouch, this._gameView);
-        // this._gameDB.on('off_clickToSetArea',this._gameView.offSendTouch, this._gameView);
-        // this._gameDB.on('toPlayList', this._gameView.toPlayList, this._gameView);
         this._gameDB.on('judgeWinner',this.UnBind,this);
 
-        // this._gameView.on('sendArea_OnTouchedEnd',this._gameDB.toSetArea, this._gameDB);
         this._gameView.on('UIPokerOnTouch',this._gameDB.toSetArea,this._gameDB);
         this._gameView.on('AIManageBtnOnTouch',this.AiManageCard,this);
         this._gameView.on('CancelAIManage',this.CancelAI,this);
@@ -91,8 +86,6 @@ var GameCtrl = cc.Class({
                 this._onLineManager.DealOpponentPoker();
             }
     },
-
-    UnBind(){},
 
     AiManageCard(){
         this._AIplayer.ContrlPlayer(this._player1);
