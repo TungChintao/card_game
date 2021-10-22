@@ -16,6 +16,7 @@ var GameView = cc.Class({
         _Model: null,
         _gameRound: null,
         _onLineManager: null,
+        _exitFlag: false,
 
         // 计数器预制，控制类，按钮---------------
         pokerMessagePrefab: cc.Prefab,
@@ -102,6 +103,7 @@ var GameView = cc.Class({
         this._Model.on('toSendArea', this.toSendArea, this);
         this._Model.on('clickToSetArea',this.toSetArea, this);
         this._Model.on('toPlayList', this.toPlayList, this);
+        this._Model.on('StopGameTouch',this.offTouchPoker,this);
         this._Model.on('GameOver',this.showResult,this);
     },
 
@@ -110,6 +112,8 @@ var GameView = cc.Class({
         this._Model.off('toSendArea', this.toSendArea, this);
         this._Model.off('clickToSetArea',this.toSetArea, this);
         this._Model.off('toPlayList', this.toPlayList, this);
+        this._Model.off('GameOver',this.showResult,this);
+        this._Model = null;
     },
 
     BindRound(gameRound){
@@ -118,8 +122,9 @@ var GameView = cc.Class({
     },
 
     UnBindRound(){
-        this._gameRound = null;
         this._gameRound.off('TurnRoundMessage',this.turnRoundMessage,this);
+        this._gameRound = null;
+       
     },
 
     BindOnline(online){
@@ -161,14 +166,12 @@ var GameView = cc.Class({
         if(setArea){ 
             let setMessage = this._Model.setPokerSuitNum.concat();
             setMessage.push(this._Model.setPokerNum());
-            cc.log(setMessage);
             this._pokerMessage.updateSetLabel(setMessage);
         }
         
         if(sendArea) {
             let sendMessage =  this._Model.sendPokerSuitNum.concat();
             sendMessage.push(this._Model.sendPokerNum());
-            cc.log(sendMessage);
             this._pokerMessage.updateSendLabel(sendMessage);
         }
     },
@@ -220,25 +223,49 @@ var GameView = cc.Class({
     },
 
     // 卡牌移动至玩家手牌区
-    toPlayList(poker, index, time, playerID){
+    // toPlayList(poker, index, time, playerID){
         
-        let node = poker.view.node;
-        if(playerID === 1){
-            UIUtil.move(node, this.player1List[poker.suit]);
-            poker.view.Area = Area.player1List;
-        }
-        else {
-            UIUtil.move(node,this.player2List[poker.suit]);
-            poker.view.Area = Area.player2List;
-        }
+    //     let node = poker.view.node;
+    //     if(playerID === 1){
+    //         UIUtil.move(node, this.player1List[poker.suit]);
+    //         poker.view.Area = Area.player1List;
+    //     }
+    //     else {
+    //         UIUtil.move(node,this.player2List[poker.suit]);
+    //         poker.view.Area = Area.player2List;
+    //     }
 
-        cc.tween(node)
-            .delay(time-0.1*index)
-            .to(0.5, {position: cc.v2(0,0)})
-            .start();
+    //     cc.tween(node)
+    //         .delay(time-0.1*index)
+    //         .to(0.5, {position: cc.v2(0,0)})
+    //         .start();
         
-        this.RefreshPokerNum(poker.suit,playerID-1);
-        this.UpdatePokerPancel(true,true,false);
+    //     this.RefreshPokerNum(poker.suit,playerID-1);
+    //     this.UpdatePokerPancel(true,true,false);
+       
+    // },
+    toPlayList(pokerGroup, indexLen, time, playerID){
+        
+        for(let i = 0;i<indexLen;i++){
+            let poker = pokerGroup[i];
+            let node = poker.view.node;
+            if(playerID === 1){
+                UIUtil.move(node, this.player1List[poker.suit]);
+                poker.view.Area = Area.player1List;
+            }
+            else {
+                UIUtil.move(node,this.player2List[poker.suit]);
+                poker.view.Area = Area.player2List;
+            }
+
+            cc.tween(node)
+                .delay(time-0.1*i)
+                .to(0.5, {position: cc.v2(0,0)})
+                .start();
+            
+            this.RefreshPokerNum(poker.suit,playerID-1);
+            this.UpdatePokerPancel(true,true,false);
+        }
        
     },
 
@@ -249,11 +276,12 @@ var GameView = cc.Class({
         // 2.这张牌是目前牌堆最上方的
         // 3.这张牌是玩家X翻开的
 
+        if(this._exitFlag) return;
+
         if(!this._gameRound.judgePlayerActive()) return;    // 判断是否为该玩家的回合
      
         if(pokerArea === Area.sendArea || pokerArea === this._gameRound.round){
             if(this._Model.isTopIndexPoker(poker,this._gameRound.round,pokerArea)){  
-                cc.log('ui1')
                 if(global.gameMode == Mode.Online){
 
                     if(pokerArea === Area.sendArea)
@@ -274,6 +302,10 @@ var GameView = cc.Class({
         }
     },
 
+    offTouchPoker(){
+        cc.log('okf');
+        this._exitFlag = true;
+    },
 
     // 创建卡牌UI
     CreateUIPoker(poker){
@@ -295,10 +327,18 @@ var GameView = cc.Class({
     },
 
     backHomeScene(){
+        this.emit('BackHomeOnTouch');
         cc.director.loadScene(global.fromWhichScene);
     },
 
     showResult(winner){
         this.emit('gameOver',winner);
+    },
+
+    Exit(){
+        // this.UnBindModel();
+        // this.UnBindOnline();
+        // this.UnBindRound();
     }
+    
 });

@@ -143,22 +143,26 @@ export default class GameDB extends Model{
             this._setPokers.push(poker);
             this._sendPokerSuitNum[dataSuit]--;
             this.emit('clickToSetArea',poker,this._setPokers.length,dealArea);
+
+            // TODO
+            if(this._sendPokers.pop().suit === setSuit) 
+                this.toPlayList(playerID);
+            //     setTimeout(()=>this.toPlayList(playerID),1600);
+
             
-            setTimeout(()=>{
-                if(this._sendPokers.pop().suit === setSuit) {
-                    this.toPlayList(playerID);
-                }
-            },1600);
 
-            if(this._sendPokers.length === 0) this.emit('GameOver');
-
-            setTimeout(()=>{ 
-                if(this._sendPokers.length === 0){
-                    this.judgeWinner();
-                    global.yourTurn = true;
-                }
-            },2500);
+            // setTimeout(()=>{ 
+            //     if(this._sendPokers.length === 0){
+            //         this.judgeWinner();
+            //         global.yourTurn = true;
+            //     }
+            // },2500);
+            if(this._sendPokerSuitNum.reduce((a,b)=>a+b) === 0){
+                this.emit('StopGameTouch');
+                // global.yourTurn = true;
+                setTimeout(()=>this.judgeWinner(),3000);
                 
+            }
 
         }
         else{
@@ -176,15 +180,26 @@ export default class GameDB extends Model{
     };
 
     toPlayList(id){
+        // this._setPokerSuitNum = [0,0,0,0];
+        // setLen = this._setPokers.length;
+        // for(let i = 0;i < setLen; i++){
+        //     let poker = this._setPokers.pop();
+        //     // console.log(poker);
+        //     this._playerPokers[id][poker.suit].AddPoker(poker);
+        //     this._playerPokersNum[id]++;
+        //     this.emit('toPlayList', poker, i,setLen*0.1,id+1);
+        // }
         this._setPokerSuitNum = [0,0,0,0];
+        let tempPokerGroup = [];
         setLen = this._setPokers.length;
         for(let i = 0;i < setLen; i++){
             let poker = this._setPokers.pop();
             // console.log(poker);
             this._playerPokers[id][poker.suit].AddPoker(poker);
             this._playerPokersNum[id]++;
-            this.emit('toPlayList', poker, i,setLen*0.1,id+1);
+            tempPokerGroup.push(poker);
         }
+        setTimeout(()=>this.emit('toPlayList', tempPokerGroup, setLen,setLen*0.1,id+1),1600);
     };
 
     isTopIndexPoker(poker,playerID, pokerArea){
@@ -203,12 +218,10 @@ export default class GameDB extends Model{
         else if(this._playerPokersNum[0] < this._playerPokersNum[1]) return 0;
         
         else return -1;
-        
     }
 
     judgeWinner(){
         let winner = this.CmpCardNum();
-        // cc.log('judge');
         
         global.winner = winner+1;
         this.emit("GameOver",winner+1);
@@ -220,17 +233,14 @@ export default class GameDB extends Model{
     }
 
     setPokerNum() { return this._setPokers.length; }
-    sendPokerNum() { return this._sendPokers.length; }
+    sendPokerNum() { return this._sendPokerSuitNum.reduce((a,b)=>a+b); }
 
     setTopPoker() { if(this._setPokers.length > 0) return this._setPokers[this._setPokers.length-1];}
     sendTopPoker() { if(this._sendPokers.length > 0) return this._sendPokers[this._sendPokers.length-1];}
 
-    playerGroupTopPoker(playerID, pokerSuit){
-        return this._playerPokers[playerID][pokerSuit].GetTopPoker();
-    }
-    playerGroupPokerNum(playerID, pokerSuit){
-        return this._playerPokers[playerID][pokerSuit].pokerNum;
-    }
+    playerGroupTopPoker(playerID, pokerSuit){return this._playerPokers[playerID][pokerSuit].GetTopPoker();}
+    playerGroupPokerNum(playerID, pokerSuit){return this._playerPokers[playerID][pokerSuit].pokerNum;}
+
 
     get pokers() { return this._pokers; };
     get sendPokers() { return this._sendPokers; };
@@ -239,5 +249,7 @@ export default class GameDB extends Model{
     get setPokerSuitNum() { return this._setPokerSuitNum;};
     get playerPokers() { return this._playerPokers; };
     get playerPokersNum() { return this._playerPokersNum; };
+
+ 
 
 };

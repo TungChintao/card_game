@@ -122,7 +122,7 @@ cc.Class({
                 // cc.log(returnData.data);
                 global.roomInfoList = returnData.data.games;
                 global.page_num = returnData.data.total_page_num;
-                cc.log(global.roomInfoList);
+                // cc.log(global.roomInfoList);
                 // let allPageItem = this._page[this._pageTurn].children;
                 // for(let i = 0;i<global.roomInfoList.length;i++){
                 //     let itemView = allPageItem[i].getComponent("RoomItemView");
@@ -195,7 +195,7 @@ cc.Class({
         xhr.onreadystatechange = ()=>{
             if(xhr.readyState == 4 && xhr.status == 200){
                 let returnData = JSON.parse(xhr.responseText);
-                cc.log(returnData);
+                // cc.log(returnData);
                 this.toWaitScene();
             }
         }
@@ -203,7 +203,7 @@ cc.Class({
     },
 
     judgeRoomStatus(uuid){
-        cc.log(uuid);
+        // cc.log(uuid);
         this.toRoomUuid.string = uuid;
         this.JoinRoom();
     },

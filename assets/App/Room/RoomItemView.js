@@ -43,7 +43,6 @@ cc.Class({
 
     
     OnTouchJoinBtn(){
-        cc.log(this.roomLabel);
         this.emit('JoinRoomOnTouch',this._uuid);
         // this.node.dispatchEvent( new cc.Event.EventCustom('JoinRoomOnTouch', false) );
     },

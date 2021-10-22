@@ -12,8 +12,11 @@ export default class OnLine extends Model{
     _gameModel = null;
     _gameRound = null;
 
+    _timeID = null;
+
     _dataStr = null;
     _lastMessageFlag = false;
+ 
 
     BindModel(model){
         this._gameModel = model;
@@ -27,7 +30,7 @@ export default class OnLine extends Model{
         this._gameRound = gameRound;
     };
 
-    UnbindRound(){
+    UnBindRound(){
         this._gameRound = null;
     };
 
@@ -52,22 +55,19 @@ export default class OnLine extends Model{
     };
 
     DealOpponentPoker(){
-        let timeID = setInterval(()=>{
+        this._timeID = setInterval(()=>{
             this.GetOpponentPoker();
-            cc.log(global.yourTurn);
             if(global.yourTurn){ 
-                clearInterval(timeID);
+                clearInterval(this._timeID);
                 this._gameRound.onlineRoundTurn();  
             }
         },900);
     };
 
     GetOpponentPoker(){
-        // let timeID = setInterval(() => {this.fetchOperation();}, 3000);
         this.fetchOperation();
         // cc.log(global.yourTurn);
         if(global.yourTurn){
-            // clearInterval(timeID);
             let data = this.parseData();
             data.point = REVERSE_POINT_MAP[data.point];
             let dealPoker = null;
@@ -82,7 +82,6 @@ export default class OnLine extends Model{
     };
 
     DealSelfPoker(pokerSuit,pokerPoint,pokerArea){
-        cc.log('dealself')
         // this._gameRound.onlineRoundTurn();
         let type = -1;
         let suit = '0';
@@ -114,7 +113,7 @@ export default class OnLine extends Model{
         xhr.onreadystatechange = ()=>{
             if(xhr.readyState == 4 && xhr.status == 200){
                 let returnData = JSON.parse(xhr.responseText);
-                cc.log(returnData);
+                //cc.log(returnData);
                 if(returnData.code == 200){
                     if(this._lastMessageFlag){
                         global.yourTurn = true;
@@ -148,10 +147,11 @@ export default class OnLine extends Model{
         xhr.onreadystatechange = () =>{
             if(xhr.readyState == 4 && xhr.status == 200){
                 let returnData = JSON.parse(xhr.responseText);
+                cc.log(returnData);
                 if(returnData.code === 200){
                  
                     if(data == null){
-                        cc.log(returnData);
+                        //cc.log(returnData);
                         this._dataStr = returnData.data.last_code;
                         let data = this.parseData();
                         data.point = REVERSE_POINT_MAP[data.point];
@@ -163,7 +163,11 @@ export default class OnLine extends Model{
             }
         }
     };
-    
 
+    Exit(){
+        clearInterval(this._timeID);
+        this.UnBindRound();
+        this.UnBindModel();
+    }
 
 }

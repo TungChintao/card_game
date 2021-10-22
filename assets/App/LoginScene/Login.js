@@ -31,9 +31,6 @@ cc.Class({
             if(this.xhr.readyState == 4 && this.xhr.status == 200){
                 
                 let returnData = JSON.parse(this.xhr.responseText);
-                // console.log(returnData,returnData.message,returnData.data.token);
-
-                // console.log(returnData.data.detail.name);
 
                 // success提示登录成功
                 // 玩家信息写入全局
@@ -45,8 +42,7 @@ cc.Class({
                     global.selfInfo.token = returnData.data.token;
                     global.selfInfo.uid = returnData.data.detail.id;
                     global.selfInfo.name = returnData.data.detail.name;
-                   
-                    cc.log(global.selfInfo);
+
                     this.toSplashScene();
                 }
                 // fail提示失败消息

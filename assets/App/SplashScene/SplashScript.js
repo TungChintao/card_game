@@ -34,7 +34,7 @@ let SplashScript = cc.Class({
                     // cc.log(returnData.data);
                     global.roomInfoList = returnData.data.games;
                     global.page_num = returnData.data.total_page_num;
-                    cc.log(global.roomInfoList);
+                    // cc.log(global.roomInfoList);
                     cc.director.loadScene('RoomScene');
                 }
             }

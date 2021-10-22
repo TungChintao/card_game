@@ -68,8 +68,6 @@ var GameCtrl = cc.Class({
         }
 
         this._gameRound.BindAI(this._AIplayer);
-       
-        this._gameDB.on('judgeWinner',this.UnBind,this);
 
         this._gameView.on('UIPokerOnTouch',this._gameDB.toSetArea,this._gameDB);
         this._gameView.on('AIManageBtnOnTouch',this.AiManageCard,this);
@@ -94,18 +92,17 @@ var GameCtrl = cc.Class({
 
     CancelAI(){
         this._AIplayer.UnContrlPlayer(this._player1);
-
     },
 
-
     Exit(){
-        this._gameView.UnbinModel();
-        this._gameView.UnbindPlayer();
-        this._gameDB.off('init_poker', this._gameView.OnEventInit);
-        this._gameDB.off('toSendArea',this._gameView.toSendArea,this._gameView);
+        if(global.gameMode == Mode.Online) this._onLineManager.Exit();
 
+        this._AIplayer.UnContrlPlayer(this._player1);
+        this._AIplayer.UnContrlPlayer(this._player2);
+
+        this._AIplayer.Exit();
+        this._gameRound.Exit();
         this._gameView.Exit();
-        this._gameDB.Exit();
     },
 
     onDestroy(){},

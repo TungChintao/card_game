@@ -5,7 +5,6 @@ var Player = cc.Class({
 
     properties: {
         id: 1,
-        uid: 0,
         nickName: undefined,
         active: false,
         AIcontrl: false,
@@ -20,10 +19,6 @@ var Player = cc.Class({
         this.id = id;
         if(nickName === undefined) this.nickName = 'Player'+this.id.toString();
         else this.nickName = nickName;
-    },
-
-    SetUid(uid){
-        this.uid = uid;
     },
 
     SetName(name){

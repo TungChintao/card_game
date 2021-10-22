@@ -82,15 +82,12 @@ export default class AI extends Model{
                     }
                 }
                 dealPoker = this._Model.playerPokers[playerID][maxNumSuit].GetTopPoker();
-                cc.log(dealPoker);
                 if(playerID === 0) dealArea = Area.player1List
                 else dealArea = Area.player2List;
             }
         }
-        // cc.log(dealArea,playerID,dealPoker.suit);
         // if(global.gameMode == Mode.Online)
         setTimeout(()=>{this._View.UIPokerOnTouch(dealPoker,dealArea);},500);
-            
         
     //     else{
     //         setTimeout(()=>{
@@ -101,5 +98,11 @@ export default class AI extends Model{
     //         },1900);
     //     }
     };
+
+    Exit(){
+        this.UnBindView();
+        this.UnBindModel();
+        this.UnBindRound();
+    }
 
 };

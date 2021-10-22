@@ -14,7 +14,6 @@ export default class GameRound extends Model{
         super();
         this.round = 0;
         this._online = new OnLine();
-        this.on('GameOver', this.roundOver,this);
     };
 
     BindPlayer(player1,player2){
@@ -28,11 +27,9 @@ export default class GameRound extends Model{
 
     BindAI(ai){
         this._AIplayer = ai;
-        this._AIplayer.on('AiDealCard', this._AIplayer.DealCard, this._AIplayer);
     };
 
     UnBindAI(){
-        this._AIplayer.on('AiDealCard', this._AIplayer.DealCard, this._AIplayer);
         this._AIplayer = null;
     };
 
@@ -69,6 +66,11 @@ export default class GameRound extends Model{
         return false;
         
     };
+
+    Exit(){
+        this.UnBindAI();
+        this.UnBindPlayer();
+    }
 
     
 }

@@ -9,9 +9,4 @@ export default class UIUtil {
 
         return this;
     };
-
-    static log(this){
-        console.log('UIUtil:log');
-        return this;
-    };
 };

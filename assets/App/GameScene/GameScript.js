@@ -26,23 +26,21 @@ cc.Class({
         this._gameCtrl.Play();
         
         this._gameView.on('gameOver',this.showResult,this);
-    },
-
-    Init(){
-   
+        this._gameView.on('BackHomeOnTouch',this.ExitGame,this);
     },
 
     showResult(winner){
-        this.ExitGame(this._gameCtrl);
+        cc.log('ok');
+        this.ExitGame();
         let gameOver = cc.instantiate(this.gameOverPrefab);
-
         this.node.addChild(gameOver);
     },
 
-    ExitGame(gameCtrl){
-        if(gameCtrl != null)
-            // gameCtrl.Exit();
-            gameCtrl.onDestroy();
+    ExitGame(){
+        if(this._gameCtrl != null){
+            this._gameCtrl.Exit();
+            this._gameCtrl.onDestroy();
+        }
     },
 
     returnLastScene(){
