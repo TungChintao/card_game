@@ -1,5 +1,3 @@
-import { Singleton } from "./Singleton"
-
 export default class Event{
 
     /**
@@ -15,7 +13,6 @@ export default class Event{
         return ()=>{
             this.off(callName, func);
         }
-        
     };
 
     /**

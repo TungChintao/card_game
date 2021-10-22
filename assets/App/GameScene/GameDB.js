@@ -227,7 +227,7 @@ export default class GameDB extends Model{
         this.emit("GameOver",winner+1);
     };
 
-    exchangePoker(suit,point){
+    drawPoker(suit,point){
         let len = this._sendPokers.length;
         this._sendPokers[len-1].setPoker(suit,point);
     }

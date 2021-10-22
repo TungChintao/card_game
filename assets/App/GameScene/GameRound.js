@@ -1,5 +1,4 @@
 import Model from "../../GameFramework/MVC/Model";
-import OnLine from "OnLine";
 import global from "../Global/global";
 import { Mode } from "../Global/ConfigEsum";
 
@@ -7,13 +6,11 @@ export default class GameRound extends Model{
     round = 0;
     _player = [];
     _AIplayer = null;
-    _online = null;
     roundTurnMessage = ['你的回合','对手回合'];
 
     constructor(){
         super();
         this.round = 0;
-        this._online = new OnLine();
     };
 
     BindPlayer(player1,player2){

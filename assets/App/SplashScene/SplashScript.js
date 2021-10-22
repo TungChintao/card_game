@@ -1,7 +1,7 @@
 import global from '../Global/global'
 import {URL} from '../Global/ConfigEsum'
 
-let SplashScript = cc.Class({
+cc.Class({
     extends: cc.Component,
 
     properties: {

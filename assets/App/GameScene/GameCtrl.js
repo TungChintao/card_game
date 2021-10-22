@@ -5,9 +5,9 @@ import GameRound from "GameRound";
 import AI from "AI"
 import global from "../Global/global";
 import {Mode} from "../Global/ConfigEsum"
-import OnLine from "OnLine";
+import OnLineManager from "OnLineManager";
 
-var GameCtrl = cc.Class({
+cc.Class({
     extends: cc.Component,
     
     properties:{
@@ -24,7 +24,7 @@ var GameCtrl = cc.Class({
 
         _AIplayer: AI,
 
-        _onLineManager: OnLine,
+        _onLineManager: OnLineManager,
 
     },
 
@@ -56,7 +56,7 @@ var GameCtrl = cc.Class({
         }
 
         if(global.gameMode == Mode.Online){
-            this._onLineManager = new OnLine();
+            this._onLineManager = new OnLineManager();
             this._onLineManager.BindModel(this._gameDB);
             this._onLineManager.BindRound(this._gameRound);
             this._gameView.BindOnline(this._onLineManager);

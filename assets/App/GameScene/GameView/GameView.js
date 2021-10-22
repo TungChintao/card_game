@@ -127,8 +127,8 @@ var GameView = cc.Class({
        
     },
 
-    BindOnline(online){
-        this._onLineManager = online;
+    BindOnline(onlineManager){
+        this._onLineManager = onlineManager;
     },
 
     UnBindOnline(){
@@ -303,7 +303,6 @@ var GameView = cc.Class({
     },
 
     offTouchPoker(){
-        cc.log('okf');
         this._exitFlag = true;
     },
 

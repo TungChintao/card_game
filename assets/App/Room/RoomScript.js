@@ -184,7 +184,7 @@ cc.Class({
     },
 
     JoinRoom(){
-        cc.log(this.toRoomUuid.string);
+        // cc.log(this.toRoomUuid.string);
         global.waitTips = '准备中......'
         global.selfRoomInfo = this.toRoomUuid.string;
         let xhr = new XMLHttpRequest();

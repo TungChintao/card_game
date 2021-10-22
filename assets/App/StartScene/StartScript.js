@@ -1,7 +1,7 @@
 import global from "../Global/global";
 import {Mode, PokerSuit} from "../Global/ConfigEsum"
 
-let StartScript = cc.Class({
+cc.Class({
     extends: cc.Component,
 
     properties: {

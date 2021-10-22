@@ -1,6 +1,6 @@
 import View from '../../GameFramework/MVC/View'
 
-var Player = cc.Class({
+cc.Class({
     extends: View,
 
     properties: {
@@ -8,10 +8,6 @@ var Player = cc.Class({
         nickName: undefined,
         active: false,
         AIcontrl: false,
-    },
-
-    start(){
-
     },
 
     Create(active,id,nickName=undefined){

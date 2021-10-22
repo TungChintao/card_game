@@ -46,7 +46,7 @@ export default class AI extends Model{
 
     // AI出牌
     DealCard(playerID){
-        // 出牌策略简易版（先做出人机模块再构思算法）
+        // 出牌策略简易版
         // (放置区无牌则点击抽牌区&&手牌比对方少) || 无手牌   抽牌
         // 否则   ！= 放置区顶部花色 && 目前花色最多的       手牌 
         let setPokersNum = this._Model.setPokerNum();

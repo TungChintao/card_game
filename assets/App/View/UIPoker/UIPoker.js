@@ -2,7 +2,7 @@ import View from "../../../GameFramework/MVC/View"
 import {Area} from "../../Global/ConfigEsum"
 import {POINT_MAP} from '../../Global/ConfigEsum'
 
-let UIPoker = cc.Class({
+cc.Class({
     extends: View,
 
     properties: {

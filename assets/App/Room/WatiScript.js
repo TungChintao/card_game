@@ -64,7 +64,7 @@ cc.Class({
       xhr.onreadystatechange = ()=>{
           if(xhr.readyState == 4 && xhr.status == 200){
               let returnData = JSON.parse(xhr.responseText);
-              cc.log(returnData);
+              // cc.log(returnData);
               if(returnData.data.last_msg == '对局刚开始'){
                   global.yourTurn = returnData.data.your_turn;
                   cc.director.loadScene('GameScene');

@@ -30,7 +30,6 @@ cc.Class({
     },
 
     showResult(winner){
-        cc.log('ok');
         this.ExitGame();
         let gameOver = cc.instantiate(this.gameOverPrefab);
         this.node.addChild(gameOver);

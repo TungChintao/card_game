@@ -7,7 +7,7 @@ import { REVERSE_POINT_MAP } from "../Global/ConfigEsum";
 import Model from "../../GameFramework/MVC/Model";
 
 
-export default class OnLine extends Model{
+export default class OnLineManager extends Model{
 
     _gameModel = null;
     _gameRound = null;
@@ -72,7 +72,7 @@ export default class OnLine extends Model{
             data.point = REVERSE_POINT_MAP[data.point];
             let dealPoker = null;
             if(data.area == Area.sendArea){ 
-                this._gameModel.exchangePoker(data.suit,data.point)
+                this._gameModel.drawPoker(data.suit,data.point)
                 poker = this._gameModel.sendTopPoker();
             }
             else if(data.area == Area.player2List) 
@@ -140,14 +140,14 @@ export default class OnLine extends Model{
             let tempdata = suit+point;
             data = `type=${type}&card=${tempdata}`;
         }
-        cc.log(data);
+        // cc.log(data);
         let url = URL.executeOpUrl + global.selfRoomInfo;
         let xhr = this.InitXhr(url,'PUT',true);
         xhr.send(data);
         xhr.onreadystatechange = () =>{
             if(xhr.readyState == 4 && xhr.status == 200){
                 let returnData = JSON.parse(xhr.responseText);
-                cc.log(returnData);
+                // cc.log(returnData);
                 if(returnData.code === 200){
                  
                     if(data == null){
@@ -155,7 +155,7 @@ export default class OnLine extends Model{
                         this._dataStr = returnData.data.last_code;
                         let data = this.parseData();
                         data.point = REVERSE_POINT_MAP[data.point];
-                        this._gameModel.exchangePoker(data.suit,data.point);
+                        this._gameModel.drawPoker(data.suit,data.point);
                         let dealPoker = this._gameModel.sendTopPoker();
                         this._gameModel.toSetArea(data.area,0,dealPoker, data.suit);
                     }
