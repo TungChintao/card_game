@@ -323,7 +323,7 @@ var GameView = cc.Class({
     },
 
     turnRoundMessage(roundMessage){
-        setTimeout(()=>{this.roundMessage.string = roundMessage;},1000);
+        this.roundMessage.string = roundMessage;
     },
 
     backHomeScene(){
