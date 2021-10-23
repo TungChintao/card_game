@@ -36,6 +36,7 @@ cc.Class({
                 // 玩家信息写入全局
                 // 跳转至新界面
                 if(returnData.status === 200){
+                    global.toWhichScene = 'StartScene';
                     this.tips.string = "登录成功";
                     this.tips.node.color = cc.Color.GREEN;
     

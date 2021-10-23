@@ -29,7 +29,7 @@ cc.Class({
         this._gameView.on('BackHomeOnTouch',this.ExitGame,this);
     },
 
-    showResult(winner){
+    showResult(){
         this.ExitGame();
         let gameOver = cc.instantiate(this.gameOverPrefab);
         this.node.addChild(gameOver);

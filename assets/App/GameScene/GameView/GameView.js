@@ -84,6 +84,7 @@ var GameView = cc.Class({
         }
     },
 
+    // 记牌器UI变化
     switchPancel(){
         if(this._touchMessageBtnFirst){
             this._touchMessageBtnFirst = false;
@@ -322,7 +323,7 @@ var GameView = cc.Class({
     },
 
     turnRoundMessage(roundMessage){
-        this.roundMessage.string = roundMessage;
+        setTimeout(()=>{this.roundMessage.string = roundMessage;},1000);
     },
 
     backHomeScene(){
@@ -330,8 +331,8 @@ var GameView = cc.Class({
         cc.director.loadScene(global.fromWhichScene);
     },
 
-    showResult(winner){
-        this.emit('gameOver',winner);
+    showResult(){
+        this.emit('gameOver');
     },
 
     Exit(){

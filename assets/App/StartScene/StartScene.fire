@@ -85,18 +85,24 @@
       },
       {
         "__id__": 26
+      },
+      {
+        "__id__": 33
+      },
+      {
+        "__id__": 36
       }
     ],
     "_active": true,
     "_components": [
       {
-        "__id__": 33
+        "__id__": 38
       },
       {
-        "__id__": 34
+        "__id__": 39
       },
       {
-        "__id__": 35
+        "__id__": 40
       }
     ],
     "_prefab": null,
@@ -380,7 +386,7 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        -340,
+        -350,
         -180,
         0,
         0,
@@ -430,9 +436,9 @@
     "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
-      "r": 126,
-      "g": 208,
-      "b": 144,
+      "r": 95,
+      "g": 198,
+      "b": 200,
       "a": 255
     },
     "_contentSize": {
@@ -499,7 +505,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 160,
+      "width": 193.34,
       "height": 50.4
     },
     "_anchorPoint": {
@@ -551,8 +557,8 @@
     ],
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_string": "人机对战",
-    "_N$string": "人机对战",
+    "_string": "人 机 对 战",
+    "_N$string": "人 机 对 战",
     "_fontSize": 40,
     "_lineHeight": 40,
     "_enableWrapText": false,
@@ -647,37 +653,37 @@
     "transition": 1,
     "_N$normalColor": {
       "__type__": "cc.Color",
-      "r": 126,
-      "g": 208,
-      "b": 144,
+      "r": 95,
+      "g": 198,
+      "b": 200,
       "a": 255
     },
     "_N$pressedColor": {
       "__type__": "cc.Color",
-      "r": 8,
-      "g": 108,
-      "b": 21,
+      "r": 89,
+      "g": 162,
+      "b": 185,
       "a": 255
     },
     "pressedColor": {
       "__type__": "cc.Color",
-      "r": 8,
-      "g": 108,
-      "b": 21,
+      "r": 89,
+      "g": 162,
+      "b": 185,
       "a": 255
     },
     "_N$hoverColor": {
       "__type__": "cc.Color",
-      "r": 65,
-      "g": 177,
-      "b": 76,
+      "r": 105,
+      "g": 221,
+      "b": 217,
       "a": 255
     },
     "hoverColor": {
       "__type__": "cc.Color",
-      "r": 65,
-      "g": 177,
-      "b": 76,
+      "r": 105,
+      "g": 221,
+      "b": 217,
       "a": 255
     },
     "_N$disabledColor": {
@@ -751,7 +757,7 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        340,
+        350,
         -180,
         0,
         0,
@@ -801,9 +807,9 @@
     "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
-      "r": 126,
-      "g": 208,
-      "b": 144,
+      "r": 95,
+      "g": 198,
+      "b": 200,
       "a": 255
     },
     "_contentSize": {
@@ -870,7 +876,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 160,
+      "width": 193.34,
       "height": 50.4
     },
     "_anchorPoint": {
@@ -922,8 +928,8 @@
     ],
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_string": "双人对战",
-    "_N$string": "双人对战",
+    "_string": "双 人 对 战",
+    "_N$string": "双 人 对 战",
     "_fontSize": 40,
     "_lineHeight": 40,
     "_enableWrapText": false,
@@ -1018,37 +1024,37 @@
     "transition": 1,
     "_N$normalColor": {
       "__type__": "cc.Color",
-      "r": 126,
-      "g": 208,
-      "b": 144,
+      "r": 95,
+      "g": 198,
+      "b": 200,
       "a": 255
     },
     "_N$pressedColor": {
       "__type__": "cc.Color",
-      "r": 8,
-      "g": 108,
-      "b": 21,
+      "r": 89,
+      "g": 162,
+      "b": 185,
       "a": 255
     },
     "pressedColor": {
       "__type__": "cc.Color",
-      "r": 8,
-      "g": 108,
-      "b": 21,
+      "r": 89,
+      "g": 162,
+      "b": 185,
       "a": 255
     },
     "_N$hoverColor": {
       "__type__": "cc.Color",
-      "r": 65,
-      "g": 177,
-      "b": 76,
+      "r": 105,
+      "g": 221,
+      "b": 217,
       "a": 255
     },
     "hoverColor": {
       "__type__": "cc.Color",
-      "r": 65,
-      "g": 177,
-      "b": 76,
+      "r": 105,
+      "g": 221,
+      "b": 217,
       "a": 255
     },
     "_N$disabledColor": {
@@ -1168,9 +1174,9 @@
     "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
-      "r": 230,
-      "g": 230,
-      "b": 230,
+      "r": 223,
+      "g": 217,
+      "b": 217,
       "a": 255
     },
     "_contentSize": {
@@ -1228,7 +1234,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "c8997b37-7cdc-4d3f-aa10-8daf635a16f1"
+      "__uuid__": "9d6acfd6-f1de-4e69-8a21-659383a5bc08"
     },
     "_type": 1,
     "_sizeMode": 0,
@@ -1290,37 +1296,37 @@
     "transition": 1,
     "_N$normalColor": {
       "__type__": "cc.Color",
-      "r": 230,
-      "g": 230,
-      "b": 230,
+      "r": 223,
+      "g": 217,
+      "b": 217,
       "a": 255
     },
     "_N$pressedColor": {
       "__type__": "cc.Color",
-      "r": 116,
-      "g": 189,
-      "b": 124,
+      "r": 180,
+      "g": 173,
+      "b": 173,
       "a": 255
     },
     "pressedColor": {
       "__type__": "cc.Color",
-      "r": 116,
-      "g": 189,
-      "b": 124,
+      "r": 180,
+      "g": 173,
+      "b": 173,
       "a": 255
     },
     "_N$hoverColor": {
       "__type__": "cc.Color",
-      "r": 143,
-      "g": 201,
-      "b": 150,
+      "r": 255,
+      "g": 255,
+      "b": 255,
       "a": 255
     },
     "hoverColor": {
       "__type__": "cc.Color",
-      "r": 143,
-      "g": 201,
-      "b": 150,
+      "r": 255,
+      "g": 255,
+      "b": 255,
       "a": 255
     },
     "_N$disabledColor": {
@@ -1444,9 +1450,9 @@
     "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
-      "r": 126,
-      "g": 208,
-      "b": 144,
+      "r": 95,
+      "g": 198,
+      "b": 200,
       "a": 255
     },
     "_contentSize": {
@@ -1513,7 +1519,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 160,
+      "width": 193.34,
       "height": 50.4
     },
     "_anchorPoint": {
@@ -1565,8 +1571,8 @@
     ],
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_string": "在线对战",
-    "_N$string": "在线对战",
+    "_string": "在 线 对 战",
+    "_N$string": "在 线 对 战",
     "_fontSize": 40,
     "_lineHeight": 40,
     "_enableWrapText": false,
@@ -1661,37 +1667,37 @@
     "transition": 1,
     "_N$normalColor": {
       "__type__": "cc.Color",
-      "r": 126,
-      "g": 208,
-      "b": 144,
+      "r": 95,
+      "g": 198,
+      "b": 200,
       "a": 255
     },
     "_N$pressedColor": {
       "__type__": "cc.Color",
-      "r": 8,
-      "g": 108,
-      "b": 21,
+      "r": 89,
+      "g": 162,
+      "b": 185,
       "a": 255
     },
     "pressedColor": {
       "__type__": "cc.Color",
-      "r": 8,
-      "g": 108,
-      "b": 21,
+      "r": 89,
+      "g": 162,
+      "b": 185,
       "a": 255
     },
     "_N$hoverColor": {
       "__type__": "cc.Color",
-      "r": 65,
-      "g": 177,
-      "b": 76,
+      "r": 105,
+      "g": 221,
+      "b": 217,
       "a": 255
     },
     "hoverColor": {
       "__type__": "cc.Color",
-      "r": 65,
-      "g": 177,
-      "b": 76,
+      "r": 105,
+      "g": 221,
+      "b": 217,
       "a": 255
     },
     "_N$disabledColor": {
@@ -1723,6 +1729,212 @@
       "__id__": 27
     },
     "_id": "48bGBSTTlJYKwLuJgca7ai"
+  },
+  {
+    "__type__": "cc.Node",
+    "_name": "New Sprite",
+    "_objFlags": 0,
+    "_parent": {
+      "__id__": 2
+    },
+    "_children": [],
+    "_active": true,
+    "_components": [
+      {
+        "__id__": 34
+      },
+      {
+        "__id__": 35
+      }
+    ],
+    "_prefab": null,
+    "_opacity": 255,
+    "_color": {
+      "__type__": "cc.Color",
+      "r": 255,
+      "g": 255,
+      "b": 255,
+      "a": 255
+    },
+    "_contentSize": {
+      "__type__": "cc.Size",
+      "width": 300,
+      "height": 330
+    },
+    "_anchorPoint": {
+      "__type__": "cc.Vec2",
+      "x": 0.5,
+      "y": 0.5
+    },
+    "_trs": {
+      "__type__": "TypedArray",
+      "ctor": "Float64Array",
+      "array": [
+        -240,
+        120,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    "_eulerAngles": {
+      "__type__": "cc.Vec3",
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "_skewX": 0,
+    "_skewY": 0,
+    "_is3DNode": false,
+    "_groupIndex": 0,
+    "groupIndex": 0,
+    "_id": "3b68iCSeZMR6nygHe0u+50"
+  },
+  {
+    "__type__": "cc.Sprite",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 33
+    },
+    "_enabled": true,
+    "_materials": [
+      {
+        "__uuid__": "eca5d2f2-8ef6-41c2-bbe6-f9c79d09c432"
+      }
+    ],
+    "_srcBlendFactor": 770,
+    "_dstBlendFactor": 771,
+    "_spriteFrame": {
+      "__uuid__": "802e81e9-cdd6-4716-8631-fc4bc967bfd8"
+    },
+    "_type": 0,
+    "_sizeMode": 0,
+    "_fillType": 0,
+    "_fillCenter": {
+      "__type__": "cc.Vec2",
+      "x": 0,
+      "y": 0
+    },
+    "_fillStart": 0,
+    "_fillRange": 0,
+    "_isTrimmedMode": true,
+    "_atlas": null,
+    "_id": "b5zOwUQO1DYp0Dxb0E3Q3L"
+  },
+  {
+    "__type__": "cc.Animation",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 33
+    },
+    "_enabled": true,
+    "_defaultClip": null,
+    "_clips": [
+      null
+    ],
+    "playOnLoad": true,
+    "_id": "d2eqkl5yVHmpk1w+7occpr"
+  },
+  {
+    "__type__": "cc.Node",
+    "_name": "New Sprite",
+    "_objFlags": 0,
+    "_parent": {
+      "__id__": 2
+    },
+    "_children": [],
+    "_active": true,
+    "_components": [
+      {
+        "__id__": 37
+      }
+    ],
+    "_prefab": null,
+    "_opacity": 255,
+    "_color": {
+      "__type__": "cc.Color",
+      "r": 255,
+      "g": 255,
+      "b": 255,
+      "a": 255
+    },
+    "_contentSize": {
+      "__type__": "cc.Size",
+      "width": 300,
+      "height": 330
+    },
+    "_anchorPoint": {
+      "__type__": "cc.Vec2",
+      "x": 0.5,
+      "y": 0.5
+    },
+    "_trs": {
+      "__type__": "TypedArray",
+      "ctor": "Float64Array",
+      "array": [
+        240,
+        120,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    "_eulerAngles": {
+      "__type__": "cc.Vec3",
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "_skewX": 0,
+    "_skewY": 0,
+    "_is3DNode": false,
+    "_groupIndex": 0,
+    "groupIndex": 0,
+    "_id": "30ITdT7m1Mwp0Jr2pc+JFx"
+  },
+  {
+    "__type__": "cc.Sprite",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 36
+    },
+    "_enabled": true,
+    "_materials": [
+      {
+        "__uuid__": "eca5d2f2-8ef6-41c2-bbe6-f9c79d09c432"
+      }
+    ],
+    "_srcBlendFactor": 770,
+    "_dstBlendFactor": 771,
+    "_spriteFrame": {
+      "__uuid__": "a30c947b-89f9-464e-a987-43da6b8aabcd"
+    },
+    "_type": 0,
+    "_sizeMode": 0,
+    "_fillType": 0,
+    "_fillCenter": {
+      "__type__": "cc.Vec2",
+      "x": 0,
+      "y": 0
+    },
+    "_fillStart": 0,
+    "_fillRange": 0,
+    "_isTrimmedMode": true,
+    "_atlas": null,
+    "_id": "387bo020RFi6QrtM6nqaH9"
   },
   {
     "__type__": "cc.Canvas",

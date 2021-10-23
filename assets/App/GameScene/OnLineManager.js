@@ -65,7 +65,7 @@ export default class OnLineManager extends Model{
     };
 
     GetOpponentPoker(){
-        this.fetchOperation();
+        this.fetchOperation();      
         // cc.log(global.yourTurn);
         if(global.yourTurn){
             let data = this.parseData();
@@ -73,7 +73,7 @@ export default class OnLineManager extends Model{
             let dealPoker = null;
             if(data.area == Area.sendArea){ 
                 this._gameModel.drawPoker(data.suit,data.point)
-                poker = this._gameModel.sendTopPoker();
+                dealPoker = this._gameModel.sendTopPoker();
             }
             else if(data.area == Area.player2List) 
                 dealPoker = this._gameModel.playerGroupTopPoker(1,data.suit);

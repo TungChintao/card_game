@@ -76,6 +76,7 @@ cc.Class({
         this.setStatus(poker.status);
     },
 
+    // 用于实时渲染
     setPoker(suit,point){
         this.pointLabel.string = `${POINT_MAP[point]}`;
         this.pointLabel.node.color = (suit === 0 || suit === 2) ? this.blackTextColor:this.redTextColor;

@@ -10,6 +10,8 @@ cc.Class({
         losePirture: cc.Sprite,
         winPirture: cc.Sprite,
         winLabel: cc.Label,
+        tiePicture: cc.Sprite,
+        
     },
 
     onLoad(){
@@ -20,15 +22,27 @@ cc.Class({
     start(){
         if(global.gameMode == Mode.PVP){
             this.losePirture.node.active = false;
-            this.winLabel.string = `Winner: Player${global.winner}`;
+            if(global.winner === 0)
+                this.winPirture.node.active = false;
+            else{
+                this.tiePicture.node.active = false;
+                this.winLabel.string = `Winner: Player${global.winner} !!!`;
+            }
         }
         else{
             if(global.winner === 1){
+                this.tiePicture.node.active = false;
                 this.losePirture.node.active = false;
-                this.winLabel.string = 'Winner：Player1!'
+                this.winLabel.string = 'Winner：Player1  !!!'
             }
-            else
+            else if(global.winner === 2){
                 this.winPirture.node.active = false;
+                this.tiePicture.node.active = false;
+            }
+            else{
+                this.winPirture.node.active = false;
+                this.losePirture.node.active = false;
+            }
         } 
  
     },

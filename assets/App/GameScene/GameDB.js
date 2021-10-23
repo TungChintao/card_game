@@ -191,7 +191,7 @@ export default class GameDB extends Model{
         // }
         this._setPokerSuitNum = [0,0,0,0];
         let tempPokerGroup = [];
-        setLen = this._setPokers.length;
+        let setLen = this._setPokers.length;
         for(let i = 0;i < setLen; i++){
             let poker = this._setPokers.pop();
             // console.log(poker);
@@ -218,13 +218,13 @@ export default class GameDB extends Model{
         else if(this._playerPokersNum[0] < this._playerPokersNum[1]) return 0;
         
         else return -1;
-    }
+    };
 
     judgeWinner(){
         let winner = this.CmpCardNum();
         
         global.winner = winner+1;
-        this.emit("GameOver",winner+1);
+        this.emit("GameOver");
     };
 
     drawPoker(suit,point){

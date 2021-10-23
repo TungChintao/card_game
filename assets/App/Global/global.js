@@ -10,9 +10,9 @@ export default{
     page_num: 0,
     gameMode:0,
     waitTips: '等待对手加入中......',
-    splashLabel: "It's a loading Scene",
+    splashLabel: "资源加载中......",
     fromWhichScene: 'HallScene',
-    toWhichScene: 'StartScene',
+    toWhichScene: 'HallScene',
     yourTurn: false,
     winner: 1,
 }
