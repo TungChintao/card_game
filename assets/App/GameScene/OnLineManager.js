@@ -34,10 +34,13 @@ export default class OnLineManager extends Model{
         this._gameRound = null;
     };
 
+    // 自己点击抽牌区卡牌
     DealPokerOnTouch(){
         this.executeOperation();
     };
 
+
+    // 处理获得的response  获取想要的信息
     parseData(){
         let [, area, poker] = this._dataStr.split(' ');
         let suit = poker[0];
@@ -54,6 +57,7 @@ export default class OnLineManager extends Model{
         return data;
     };
 
+    // 处理对方操作，反应到前端界面上
     DealOpponentPoker(){
         this._timeID = setInterval(()=>{
             this.GetOpponentPoker();
@@ -64,6 +68,8 @@ export default class OnLineManager extends Model{
         },900);
     };
 
+
+    // 获取对方操作
     GetOpponentPoker(){
         this.fetchOperation();      
         // cc.log(global.yourTurn);
@@ -132,6 +138,7 @@ export default class OnLineManager extends Model{
         }
     };
 
+    // 执行操作
     executeOperation(type=-1,suit=-1,point=-1){
         let data = null;
         if(type == 0)

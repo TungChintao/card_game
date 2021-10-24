@@ -32,6 +32,8 @@ cc.Class({
         
     // },
 
+
+    // 初始化
     Init(gameView){
         this._gameView = gameView;
         this._gameDB = new GameDB();
@@ -76,6 +78,7 @@ cc.Class({
         else    this._gameDB.shuffle();
     },
 
+    //游戏开始
     Play(){
         this._gameDB.toSendArea();
         if(global.gameMode == Mode.Online)
