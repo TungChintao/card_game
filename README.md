@@ -4,10 +4,10 @@
 基于JavaScript和Cocos Creator实现的一款卡牌类对战游戏
 
 # 运行环境
-Cocos Creator V2.4.6 
+Cocos Creator v2.4.6 
 
 # 编译方法
-clone或者下载zip，在Cocos Creator中导入该项目，直接点击运行预览
+clone或者下载zip，在Cocos Creator中导入该项目，初始场景选择HallScene,直接点击运行预览
 
 # 使用方法
 下载releases中的文件，点击pigtail.html可直接运行使用，或在上述运行环境中根据编译方法运行
